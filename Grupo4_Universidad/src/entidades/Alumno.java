@@ -12,13 +12,16 @@ import java.time.LocalDate;
  * @author Nuri
  */
 public class Alumno {
-        private int id = -1;
+    private int id = -1;
     private int dni;
     private String apellido;
     private String nombre;
     private LocalDate fecNac;
     private boolean activo;
 
+    public Alumno() {
+    }
+    
     public Alumno(int dni, String apellido, String nombre, LocalDate fecNac, boolean activo) {
         this.dni = dni;
         this.apellido = apellido;
@@ -83,6 +86,6 @@ public class Alumno {
         this.activo = activo;
     }
     public String toString(){
-        return id+"-"+nombre;
+        return id+"-"+nombre+"-"+apellido+" dni: "+dni+" fecha de nacimiento: "+fecNac+" esta activo? "+activo;
     }
 }

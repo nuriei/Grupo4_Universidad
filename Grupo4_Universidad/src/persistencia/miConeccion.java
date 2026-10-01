@@ -9,7 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class miConeccion {
-        private String url;
+    private String url;
     private String usuario; //
     private String password;
     

@@ -5,12 +5,15 @@
 package persistencia;
 
 import entidades.Alumno;
+import java.util.List;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,16 +39,49 @@ public class AlumnoData {
             ps.executeUpdate();     // 3
             
             ResultSet rs = ps.getGeneratedKeys();  // recupero y asigno
-            if(rs.next())
-                a.setId(rs.getInt(1));
-            else
-                System.out.println("No se pudo tener ID");
+            
+        if (rs.next()) {
+                a.setId(rs.getInt(1)); // Asigna el id_alumno autogenerado por MySQL
+                System.out.println("¡Alumno guardado con exito! ID: " + a.getId());
+            } else {
+                System.out.println("No se pudo obtener el ID autogenerado.");
+            }
             ps.close();
-            System.out.println("Guardado!");
         } catch (SQLException ex) {
-            System.out.println("No pude insertar");    
+            System.out.println("Error al insertar alumno: " + ex.getMessage());    
         }
+        }
+        public List <Alumno> listarAlumnos() {
+
+            List<Alumno> listaAlumno = new ArrayList<>();
+                
+                    String sql = "SELECT * FROM alumno ";
+                try {
+                    PreparedStatement ps = con.prepareStatement(sql);
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        Alumno alumno = new Alumno();
+
+                        alumno.setId(rs.getInt("id_alumno"));
+                        alumno.setDni(rs.getInt("dni"));
+                        alumno.setApellido(rs.getString("apellido"));
+                        alumno.setNombre(rs.getString("nombre"));
+                        alumno.setFecNac(rs.getDate("fechaNacimiento").toLocalDate());
+                        alumno.setActivo(rs.getBoolean("estado"));
+                        listaAlumno.add(alumno);
+                        System.out.println(alumno.toString());
+                    }
+                    ps.close();
+
+
+                } catch (SQLException ex) {
+                    System.out.println("no se pudo acceder a la tabla para listarla");
+                }
+                    return listaAlumno;
+                }
+
+
         
-    } 
-    
+            
+       
 }
