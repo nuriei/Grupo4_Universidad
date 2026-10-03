@@ -113,7 +113,37 @@ public class AlumnoData {
         return alumno;
     }
 
+public void actualizarAlumno(Alumno alumno) {
 
+    
+    String sql = "UPDATE alumno SET dni = ?, apellido = ?, nombre = ?, fechaNacimiento = ? WHERE id_alumno = ?";//modificacion en sql teniendo en cuenta q solo va a modificar lo q encuentre distinto, si no no se va a modificar nada
+    PreparedStatement ps = null;
+
+    try {
+        ps = con.prepareStatement(sql);
+        
+        ps.setInt(1, alumno.getDni());
+        ps.setString(2, alumno.getApellido());
+        ps.setString(3, alumno.getNombre());
+        ps.setDate(4, Date.valueOf(alumno.getFecNac()));
+        ps.setInt(5, alumno.getId());
+        //el activo lo dejaremos para la baja logica                    
+
+        int modificado = ps.executeUpdate(); //aca pongo una variable q me guarda si se modifico algo o no para poder largar los carteles
+
+        if (modificado == 1) {//porque 1 porque si modifico algo en la fila devuelve 1 si el UPDATE
+            System.out.println("Alumno modificado exitosamente.");
+            System.out.println("el alumno del id: "+alumno.getId()+" ahora esta actuaizado asi: "+alumno.toString());
+        } else {
+            System.out.println("No se encontró el alumno a modificar.");
+        }
+
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al acceder a la tabla Alumno: " + ex.getMessage());
+    } 
+  }
 
         
             
