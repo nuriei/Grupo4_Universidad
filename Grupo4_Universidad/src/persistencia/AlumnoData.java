@@ -23,7 +23,7 @@ public class AlumnoData {
     
     private Connection con = null;
 
-    public AlumnoData(miConeccion conec) {  
+    public AlumnoData(miConexion conec) {  
         this.con = (Connection) conec.buscarConexion();
     }
         public void guardarAlumno(Alumno a){    // obj alumno sin id valido
@@ -79,6 +79,40 @@ public class AlumnoData {
                 }
                     return listaAlumno;
                 }
+        
+       //buscar alumno por id
+    public Alumno buscarAlumnoId(int id) {
+        Alumno alumno = null; //creo una variable del tipo alimno q si pasa algo lo inicia en null para q no haya error
+    
+        String sql = "SELECT dni, apellido, nombre, fechaNacimiento FROM alumno WHERE id_alumno = ?";//consulta de sql(consultar si todos o solo los activos?)
+        PreparedStatement ps = null;//variable p conexion
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id); //aca le digo q cambie de la consulta de arriba el ? por 1 q es la posicion en mi base de datos y le digo q se concentre en el numero que le paso por el parametro id
+            ResultSet rs = ps.executeQuery(); 
+
+            if (rs.next()) {//si encontro algo
+                alumno = new Alumno();
+                alumno.setId(id); // le carga los datos
+                alumno.setDni(rs.getInt("dni"));
+                alumno.setApellido(rs.getString("apellido"));
+                alumno.setNombre(rs.getString("nombre"));
+                alumno.setFecNac(rs.getDate("fechaNacimiento").toLocalDate());
+                alumno.setActivo(true);
+                System.out.println("alumno encontrad: "+alumno.toString());
+            } else {
+                System.out.println("No se encontro alumno");//aca iria el cartel cuando sea vista
+            }
+            ps.close();
+
+        } catch (SQLException ex) { 
+            System.out.println("no se pudo acceder a la base de datos");//esto tambien seria un joptionpane
+        }
+
+        return alumno;
+    }
+
 
 
         

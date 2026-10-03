@@ -8,14 +8,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class miConeccion {
+public class miConexion {
     private String url;
     private String usuario; //
     private String password;
     
     private static Connection conexion = null;  // lo que importa  
     
-    public miConeccion(String url, String usr, String pass){     
+    public miConexion(String url, String usr, String pass){     
         this.url= url;  
         usuario=usr;
         password=pass;
