@@ -36,6 +36,21 @@ public class Grupo4_Univerisdad {
         alumnoData.listarAlumnos();//esto es empleando el metodo de listar alumno de la clase lista data q recorre la tabla de sql y los trae e imprime
         System.out.println("--------------------------------------busqueda de alumno por id-------------------------------------------");
         alumnoData.buscarAlumnoId(5);
+        
+        
+        //aca hay dos formas de modificar alumno por como funciona con la modificacion en sql 1) buscamos un alumno entonces ya tenemos datos para modificar 
+        //y que el metodo buscar alumno crea o creamos un alumno y llenamos todos los campos para que no largue error
+        //usamos la opcion 1 para eso tenemos q crear un alumno con los datos pasados por parametro
+        Alumno alu = alumnoData.buscarAlumnoId(5);
+        if (alu != null) {
+            alu.setNombre("Raul");
+            alu.setFecNac(LocalDate.of(1995, 8, 20));
+
+            alumnoData.actualizarAlumno(alu); 
+
+        
+        }
+       
          
     }
            
