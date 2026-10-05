@@ -45,17 +45,34 @@ public class Grupo4_Univerisdad {
         if (alu != null) {
             alu.setNombre("Raul");
             alu.setFecNac(LocalDate.of(1995, 8, 20));
+            System.out.println("----------------------------------alumno actualizado---------------------------");
 
             alumnoData.actualizarAlumno(alu); 
 
         
         }
+        System.out.println("------------------baja logica al alumno 7 garrido ------------------");
+        System.out.println("muestro antes de modificar q este en true"+alu.toString());
+        alumnoData.bajaAlumno(7);
+        System.out.println("el despues de modificar viendo si esta en false"+alu.toString());
+
+        System.out.println("------------------ alta logica al mismo alumno ------------------");
+        alumnoData.altaAlumno(7);
+        System.out.println("muestro despues de modificar con alta logica q este en true de nuevo"+alu.toString());
+
+        System.out.println("------------------ borrado permanente ------------------");
+        
+        Alumno paraBorrar = new Alumno(11111111, "borrado", "permanente", LocalDate.of(2001, 1, 1), true);//creo uno nuevo porque como se va a borrar 
+        alumnoData.guardarAlumno(paraBorrar); 
+
+        int idParaBorrar = paraBorrar.getId();// guardo el id q le creo 
+        System.out.println("alumno temporal creado con id: " + idParaBorrar+" "+paraBorrar.toString());
+
+        alumnoData.eliminarAlumnoBaseDatos(idParaBorrar);
+        System.out.println("buscado de alumno por id ");
+        alumnoData.buscarAlumnoId(idParaBorrar);
+    }
        
          
-    }
-           
-       
-             
-
-}
+    }          
 

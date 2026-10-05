@@ -147,8 +147,8 @@ public void actualizarAlumno(Alumno alumno) {
   }
 
         
-     public void bajaAlumno (int id) throws SQLException{       
-       String sql= "UPDATE alumno SET estado = 0 WHERE idAlumno= ?";
+     public void bajaAlumno (int id) {       
+       String sql= "UPDATE alumno SET estado = 0 WHERE id_alumno= ?";
        
        try {
            PreparedStatement ps =con.prepareStatement (sql);
@@ -159,6 +159,7 @@ public void actualizarAlumno(Alumno alumno) {
                
                //JOptionPane.showMessageDialog(null,"Alumno Eliminado");
            }
+           ps.close();
        }
        catch (SQLException ex){
            System.out.println("No se puede acceder a la base de datos");
@@ -175,7 +176,7 @@ public void actualizarAlumno(Alumno alumno) {
         int altaDada = ps.executeUpdate();
         
         if (altaDada == 1) {//si detecta un cambio la variable toma el valor 1
-            System.out.println("alumno id " + id + " ahora está ACTIVO");
+            System.out.println("alumno id " + id + " ahora está activo");
         } else {
             
             System.out.println("se encontró el id del alumno, pero no se modificó porque ya estaba activo o el id no existe");
@@ -186,7 +187,7 @@ public void actualizarAlumno(Alumno alumno) {
         System.out.println("error al  intentar activar alumno " + ex.getMessage()); 
     }
 }
-     public void eliminarAlumnoFisico(int id) {       
+     public void eliminarAlumnoBaseDatos(int id) {       
        String sql = "DELETE FROM alumno WHERE id_alumno = ?";
     
     try {
@@ -195,11 +196,11 @@ public void actualizarAlumno(Alumno alumno) {
         
         int alumnoEliminado = ps.executeUpdate();
         
-        if (alumnoEliminado == 1) {
+        if (alumnoEliminado == 1) {//aca lo mismo la variable toma valor 1 si hay un cambio
             System.out.println("se elimino el alumno con el id" + id + " definitivamente de la base de datos");
         } else {
-           
-            System.out.println("el id " + id + " no existe");
+           //si no si queda en cero porque no hizo cambios o no lo encontro queda en 0
+            System.out.println("el id " + id + " no se pudo borrar o no existe");
         }
         
         ps.close();
