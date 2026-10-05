@@ -146,7 +146,7 @@ public void actualizarAlumno(Alumno alumno) {
   }
 
         
-     public void eliminarAlumno (int id) throws SQLException{       
+     public void bajaAlumno (int id) throws SQLException{       
        String sql= "UPDATE alumno SET estado = 0 WHERE idAlumno= ?";
        
        try {
@@ -154,12 +154,14 @@ public void actualizarAlumno(Alumno alumno) {
            ps.setInt(1, id);
            int exito=ps.executeUpdate();
            if (exito ==1){
+               System.out.println("El alumno fue dado de baja");
                
-               JOptionPane.showMessageDialog(null,"Alumno Eliminado");
+               //JOptionPane.showMessageDialog(null,"Alumno Eliminado");
            }
        }
        catch (SQLException ex){
-           JOptionPane.showMessageDialog (null, "Error"); 
+           System.out.println("No se puede acceder a la base de datos");
+           //JOptionPane.showMessageDialog (null, "Error"); 
        }
 }
 }
