@@ -165,4 +165,46 @@ public void actualizarAlumno(Alumno alumno) {
            //JOptionPane.showMessageDialog (null, "Error"); 
        }
 }
+     public void altaAlumno(int id) {       
+    String sql = "UPDATE alumno SET estado = true WHERE id_alumno = ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id); // a la incognita 1 le paso el valor de id
+        
+        int altaDada = ps.executeUpdate();
+        
+        if (altaDada == 1) {//si detecta un cambio la variable toma el valor 1
+            System.out.println("alumno id " + id + " ahora está ACTIVO");
+        } else {
+            
+            System.out.println("se encontró el id del alumno, pero no se modificó porque ya estaba activo o el id no existe");
+        }
+        
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("error al  intentar activar alumno " + ex.getMessage()); 
+    }
+}
+     public void eliminarAlumnoFisico(int id) {       
+       String sql = "DELETE FROM alumno WHERE id_alumno = ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        
+        int alumnoEliminado = ps.executeUpdate();
+        
+        if (alumnoEliminado == 1) {
+            System.out.println("se elimino el alumno con el id" + id + " definitivamente de la base de datos");
+        } else {
+           
+            System.out.println("el id " + id + " no existe");
+        }
+        
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al intentar eliminar el alumno " + ex.getMessage()); 
+    }
+}
 }
