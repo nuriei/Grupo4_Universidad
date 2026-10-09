@@ -21,13 +21,13 @@ import javax.swing.JOptionPane;
  */
 public class AlumnoData {
     
-    private Connection con = null;
+    private Connection con = null; //atributo conexion
 
     public AlumnoData(miConexion conec) {  
-        this.con = (Connection) conec.buscarConexion();
+        this.con = (Connection) conec.buscarConexion();//establecemos la conexion con el constructor
     }
         public void guardarAlumno(Alumno a){    // obj alumno sin id valido
-        String sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) VALUES (?,?,?,?,?)";  //1
+        String sql = "INSERT INTO alumno(dni, apellido, nombre, fechaNacimiento, estado) VALUES (?,?,?,?,?)";  //1a consulta tal cual esta en la base de datos
         
         try {
             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); //2
@@ -51,7 +51,7 @@ public class AlumnoData {
             System.out.println("Error al insertar alumno: " + ex.getMessage());    
         }
         }
-        public List <Alumno> listarAlumnos() {
+        public List <Alumno> listarAlumnos() {//hay q hacer el listar alumno activo e inactivo para q filtre mejor o poner cuando tengamos la vista el  numero logico
 
             List<Alumno> listaAlumno = new ArrayList<>();
                 

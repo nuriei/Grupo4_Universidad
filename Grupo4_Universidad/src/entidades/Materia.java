@@ -20,6 +20,10 @@ public class Materia {
         this.activo = activo;
     }
 
+    public Materia() {
+    }
+    
+
     public int getId_materia() {
         return id_materia;
     }
