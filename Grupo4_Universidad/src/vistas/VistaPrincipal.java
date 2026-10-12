@@ -41,6 +41,9 @@ public class VistaPrincipal extends javax.swing.JFrame {
                 }
             }
         };
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenuAdm = new javax.swing.JMenu();
+        jMenuConsultas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SGULP");
@@ -55,8 +58,16 @@ public class VistaPrincipal extends javax.swing.JFrame {
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 719, Short.MAX_VALUE)
+            .addGap(0, 696, Short.MAX_VALUE)
         );
+
+        jMenuAdm.setText("Administracion");
+        jMenuBar1.add(jMenuAdm);
+
+        jMenuConsultas.setText("Consultas");
+        jMenuBar1.add(jMenuConsultas);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,5 +120,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenuAdm;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuConsultas;
     // End of variables declaration//GEN-END:variables
 }

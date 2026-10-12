@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package persistencia;
 
 import entidades.Materia;
@@ -14,10 +10,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Nuri
- */
+
 public class MateriaData {
      private Connection con = null; //atributo conexion
 
@@ -25,12 +18,93 @@ public class MateriaData {
         this.con = (Connection) conec.buscarConexion();//establecemos la conexion con el constructor
     }
     
-    //aca iria guardar materia
+    //Metodo guardar materia
+    public void guardarMateria(Materia m) {
+    // Consulta SQL con los campos de la tabla 'materia'
+    String sql = "INSERT INTO materia(nombre, estado) VALUES (?,?)"; 
     
+    try {
+         PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS); 
+         ps.setString(1, m.getNombre());
+         ps.setBoolean(2, m.isActivo()); 
+        
+         ps.executeUpdate();     
+        
+       
+        ResultSet rs = ps.getGeneratedKeys();  
+        
+        if (rs.next()) {
+            m.setId_materia(rs.getInt(1)); // Asigna el id_materia generado por MySQL a tu objeto
+            System.out.println("materia" + m.getNombre() + " ID: " + m.getId_materia() + " agregada con exito");
+        } else {
+            System.out.println("no se pudo obtener el ID autogenerado para la materia");
+        }
+        
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al insertar materia: " + ex.getMessage());    
+    }
+}
     
     //aca listar materia
+    public List<Materia> listarMaterias(boolean soloActivas) {
+    List<Materia> listaMaterias = new ArrayList<>();
     
-    //aca buscar materia por nombre
+     String sql = "SELECT * FROM materia";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Materia materia = new Materia();
+
+            materia.setId_materia(rs.getInt("id_materia"));
+            materia.setNombre(rs.getString("nombre"));
+            materia.setActivo(rs.getBoolean("estado")); 
+            
+            listaMaterias.add(materia);
+            System.out.println(materia.toString());
+        }
+        ps.close();
+
+    } catch (SQLException ex) {
+        System.out.println("Error al acceder a la tabla materia para listarla: " + ex.getMessage());
+    }
+    return listaMaterias;
+}
+    
+    //buscar materia por nombre
+    public Materia buscarMateriaPorNombre(String nombreBuscar) {
+    Materia materia = null; // Si no encuentra nada, retornará null
+
+    String sql = "SELECT id_materia, nombre, estado FROM materia WHERE nombre = ?";
+    PreparedStatement ps = null;
+
+    try {
+        ps = con.prepareStatement(sql);
+        ps.setString(1, nombreBuscar); 
+        
+        ResultSet rs = ps.executeQuery(); 
+
+        if (rs.next()) { // Si encontró la materia exacta
+            materia = new Materia();
+            materia.setId_materia(rs.getInt("id_materia")); 
+            materia.setNombre(rs.getString("nombre"));
+            materia.setActivo(rs.getBoolean("estado")); 
+            
+            System.out.println("materia encontrada: " + materia.toString());
+        } else {
+            System.out.println("no se encontro la materia con el nombre: " + nombreBuscar);
+        }
+        ps.close();
+
+    } catch (SQLException ex) { 
+        System.out.println("no se pudo acceder a la base de datos para buscar la materia: " + ex.getMessage());
+    }
+
+    return materia;
+}
     
     
     //aca baja materia

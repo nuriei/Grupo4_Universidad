@@ -31,6 +31,7 @@ public class Alumno {
         this.id = -1;
     }
         public Alumno( int id, int dni, String apellido, String nombre, LocalDate fecNac, boolean activo) {
+        this.id = id;//Faltaba asignar el id q se pasa por parametro- Jess
         this.dni = dni;
         this.apellido = apellido;
         this.nombre = nombre;
