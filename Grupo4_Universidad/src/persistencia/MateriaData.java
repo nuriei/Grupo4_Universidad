@@ -107,12 +107,68 @@ public class MateriaData {
 }
     
     
-    //aca baja materia
+    public void bajaMateria(int id) {       
+    String sql = "UPDATE materia SET estado = 0 WHERE id_materia = ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        int exito = ps.executeUpdate();
+        if (exito == 1) {
+            System.out.println("La materia fue dada de baja");
+            //JOptionPane.showMessageDialog(null,"Materia Eliminada");
+        }
+        ps.close();
+    }
+    catch (SQLException ex) {
+        System.out.println("No se puede acceder a la base de datos");
+        //JOptionPane.showMessageDialog (null, "Error"); 
+    }
+}
    
     
-    //aca alta materia
+    public void altaMateria(int id) {       
+    String sql = "UPDATE materia SET estado = true WHERE id_materia = ?";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id); // a la incognita 1 le paso el valor de id
+        
+        int altaDada = ps.executeUpdate();
+        
+        if (altaDada == 1) {//si detecta un cambio la variable toma el valor 1
+            System.out.println("materia id " + id + " ahora está activa");
+        } else {
+            System.out.println("se encontró el id de la materia, pero no se modificó porque ya estaba activa o el id no existe");
+        }
+        
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("error al intentar activar materia " + ex.getMessage()); 
+    }
+}
     
     
-    //aca eliminar materia
+    public void eliminarMateriaBaseDatos(int id) {       
+    String sql = "DELETE FROM materia WHERE id_materia = ?";
+    
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+
+            int materiaEliminada = ps.executeUpdate();
+
+            if (materiaEliminada == 1) {//aca lo mismo la variable toma valor 1 si hay un cambio
+                System.out.println("se elimino la materia con el id " + id + " definitivamente de la base de datos");
+            } else {
+                //si no si queda en cero porque no hizo cambios o no lo encontro queda en 0
+                System.out.println("el id " + id + " no se pudo borrar o no existe");
+            }
+
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al intentar eliminar la materia " + ex.getMessage()); 
+        }
+    }
    
 }
