@@ -12,6 +12,9 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
     public VistaAlumno() {
         initComponents();
+          btnSalir.addActionListener(evt -> {
+        this.dispose();
+         });
     }
 
     

@@ -4,10 +4,9 @@
  */
 package vistas;
 
-/**
- *
- * @author jemor
- */
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 public class VistaMaterias extends javax.swing.JInternalFrame {
 
     /**
@@ -15,6 +14,9 @@ public class VistaMaterias extends javax.swing.JInternalFrame {
      */
     public VistaMaterias() {
         initComponents();
+        jbSalir.addActionListener(evt -> {
+        this.dispose();
+         });
     }
 
     /**
