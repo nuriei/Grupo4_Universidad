@@ -22,7 +22,7 @@ public class Grupo4_Univerisdad {
        // Alumno estudioso = new Alumno(35999888, "Garrido", "Sandra", LocalDate.of(2000, 3, 15), true);//esta es otra forma de crear un alumno donde le paso la fecha con localDate.of
         //importante q la linea de arriba donde instancio un alumno se comente si ya existe o si no quiero agregar otro alumno y solo quiero listar lo que tengo en la bd
         //new Grupo4_Univerisdad().conectar(estudioso);//con esto llamo el metodo conectar q conecta a la base de datos
-        Materia mat1 = new Materia("Laboratorio III", true);
+        Materia mat1 = new Materia("Laboratorio", true);
        new Grupo4_Univerisdad().probarMateria(mat1);
     } 
 
@@ -77,11 +77,10 @@ public class Grupo4_Univerisdad {
     void probarMateria(Materia materiaParametro) {
         
         conexion = new miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", ""); 
-        
-        // 2. Instanciamos MateriaData pasándole la conexión
+ 
         materiaData = new MateriaData(conexion);
        
-        /*// // 3. Guardamos la materia que viene por parámetro desde el main
+
         System.out.println("------------------ Guardando materia pasada por parámetro ------------------");
         materiaData.guardarMateria(materiaParametro);
        materiaData = new MateriaData(conexion);
@@ -112,7 +111,7 @@ public class Grupo4_Univerisdad {
         materiaData.listarMaterias(true);
 
         System.out.println("------------------ eliminacion permanente de materia para borrar------------------");
-        System.out.println("id de materia a eliminar : "+mat2.getId_materia());*/
+        System.out.println("id de materia a eliminar : "+mat2.getId_materia());
         materiaData.eliminarMateriaBaseDatos(5);
         
     
