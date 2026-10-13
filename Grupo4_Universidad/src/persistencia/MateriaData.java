@@ -47,27 +47,24 @@ public class MateriaData {
 }
     
     //aca listar materia
-    public List<Materia> listarMaterias(boolean soloActivas) {
+    public List<Materia> listarMaterias(boolean condicion) {
     List<Materia> listaMaterias = new ArrayList<>();
-    
-     String sql = "SELECT * FROM materia";
+    String sql = "SELECT * FROM materia WHERE estado = ?";
     
     try {
         PreparedStatement ps = con.prepareStatement(sql);
+        ps.setBoolean(1, condicion); // <-- Le pasamos el true o false recibido
         ResultSet rs = ps.executeQuery();
         
         while (rs.next()) {
             Materia materia = new Materia();
-
             materia.setId_materia(rs.getInt("id_materia"));
             materia.setNombre(rs.getString("nombre"));
             materia.setActivo(rs.getBoolean("estado")); 
             
             listaMaterias.add(materia);
-            System.out.println(materia.toString());
         }
         ps.close();
-
     } catch (SQLException ex) {
         System.out.println("Error al acceder a la tabla materia para listarla: " + ex.getMessage());
     }
@@ -105,10 +102,39 @@ public class MateriaData {
 
     return materia;
 }
+    // Buscar materia por ID
+    public Materia buscarMateriaPorId(int id) {
+        Materia materia = null;
+        String sql = "SELECT id_materia, nombre, estado FROM materia WHERE id_materia = ?";
+        PreparedStatement ps = null;
+
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                materia = new Materia();
+                materia.setId_materia(rs.getInt("id_materia"));
+                materia.setNombre(rs.getString("nombre"));
+                materia.setActivo(rs.getBoolean("estado"));
+                
+                System.out.println("materia encontrada id: : " + materia.toString());
+            } else {
+                System.out.println("no se encontro materia con el siguiente id:  " + id);
+            }
+            ps.close();
+
+        } catch (SQLException ex) {
+            System.out.println("ni se pudo acceder a la bd " + ex.getMessage());
+        }
+
+        return materia;
+    }
     
     
     public void bajaMateria(int id) {       
-    String sql = "UPDATE materia SET estado = 0 WHERE id_materia = ?";
+    String sql = "UPDATE materia SET estado = false WHERE id_materia = ?";
     
     try {
         PreparedStatement ps = con.prepareStatement(sql);

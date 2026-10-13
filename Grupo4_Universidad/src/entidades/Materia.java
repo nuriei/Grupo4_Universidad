@@ -1,14 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package entidades;
 
-/**
- *
- * @author Nuri
- */
 public class Materia {
     private int  id_materia;
     private String  nombre;
@@ -22,7 +14,11 @@ public class Materia {
 
     public Materia() {
     }
-    
+
+   public Materia(String nombre, boolean activo) {
+        this.nombre = nombre;
+        this.activo = activo;
+    }   
 
     public int getId_materia() {
         return id_materia;

@@ -1,35 +1,36 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
+
 package principal;
 
 import entidades.Alumno;
+import entidades.Materia;
 import persistencia.AlumnoData;
 import java.time.LocalDate;
+import persistencia.MateriaData;
 import persistencia.miConexion;
 
 public class Grupo4_Univerisdad {
    
     private AlumnoData alumnoData;//variable q se usa para la conexion
     private miConexion conexion;//igual
-    /**
-     * @param args the command line arguments
-     */
+    private MateriaData materiaData;
+  
     public static void main(String[] args) {
        
-        LocalDate fecha = LocalDate.now(); //se usa solo si quiero ponerle a la fecha de nacimiento la fecha de hoy
+       // LocalDate fecha = LocalDate.now(); //se usa solo si quiero ponerle a la fecha de nacimiento la fecha de hoy
         //Alumno estudioso = new Alumno(41879635, "costa","Carlos", LocalDate.now(),true); // como en este caso si no se pasa por parametro en el constructor
        
-        Alumno estudioso = new Alumno(35999888, "Garrido", "Sandra", LocalDate.of(2000, 3, 15), true);//esta es otra forma de crear un alumno donde le paso la fecha con localDate.of
+       // Alumno estudioso = new Alumno(35999888, "Garrido", "Sandra", LocalDate.of(2000, 3, 15), true);//esta es otra forma de crear un alumno donde le paso la fecha con localDate.of
         //importante q la linea de arriba donde instancio un alumno se comente si ya existe o si no quiero agregar otro alumno y solo quiero listar lo que tengo en la bd
-        new Grupo4_Univerisdad().conectar(estudioso);//con esto llamo el metodo conectar q conecta a la base de datos
+        //new Grupo4_Univerisdad().conectar(estudioso);//con esto llamo el metodo conectar q conecta a la base de datos
+        Materia mat1 = new Materia("Laboratorio III", true);
+       new Grupo4_Univerisdad().probarMateria(mat1);
     } 
 
-    void conectar(Alumno estudioso) {
+   // void conectar(Alumno estudioso) {
+       
         
-        conexion = new miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", ""); //aca accedo a la base de datos
-        alumnoData = new AlumnoData(conexion);   //instancio un alumno data
+        //conexion = new miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", ""); //aca accedo a la base de datos
+       /* alumnoData = new AlumnoData(conexion);   //instancio un alumno data
 
         //alumnoData.guardarAlumno(estudioso); //aca guardo el alumno pasandole el estudioso q viene de la linea 25 por eso el metodo recibe por parametro estudioso
         System.out.println("-------------------------------------lista de mi sql local------------------------------------------------");
@@ -71,8 +72,54 @@ public class Grupo4_Univerisdad {
         alumnoData.eliminarAlumnoBaseDatos(idParaBorrar);
         System.out.println("buscado de alumno por id ");
         alumnoData.buscarAlumnoId(idParaBorrar);
-    }
+        */
+    
+    void probarMateria(Materia materiaParametro) {
+        
+        conexion = new miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", ""); 
+        
+        // 2. Instanciamos MateriaData pasándole la conexión
+        materiaData = new MateriaData(conexion);
+       
+        /*// // 3. Guardamos la materia que viene por parámetro desde el main
+        System.out.println("------------------ Guardando materia pasada por parámetro ------------------");
+        materiaData.guardarMateria(materiaParametro);
+       materiaData = new MateriaData(conexion);
+       
+        
+        Materia mat2 = new Materia("para borrar", true);
+        
+        
+        materiaData.guardarMateria(mat2);
+
+        System.out.println("---------------------------------- buscar por id ------------------------------");
+        materiaData.buscarMateriaPorId(materiaParametro.getId_materia());
+
+        System.out.println("---------------------------------- buscar por id --------------------------");
+        materiaData.buscarMateriaPorNombre("para borrar");
+
+        System.out.println("---------------------------------- muestra de lista de materias activas ------------------------------------");
+        materiaData.listarMaterias(true);
+
+        System.out.println("------------------ baja logica de la materia para borrar ------------------");
+        materiaData.bajaMateria(materiaParametro.getId_materia());
+        System.out.println("---------------------------------- listar materias despues de borrado logico ------------------------------------");
+        materiaData.listarMaterias(true);
+        
+        System.out.println("------------------ le vuelvo a dar de alta ------------------");
+        materiaData.altaMateria(materiaParametro.getId_materia());
+        System.out.println("---------------------------------- vuelvo a listar todas las activas ------------------------------------");
+        materiaData.listarMaterias(true);
+
+        System.out.println("------------------ eliminacion permanente de materia para borrar------------------");
+        System.out.println("id de materia a eliminar : "+mat2.getId_materia());*/
+        materiaData.eliminarMateriaBaseDatos(5);
+        
+    
+        
+    
        
          
-    }          
+    }     
+}
 
