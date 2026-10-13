@@ -75,6 +75,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenuAdm.add(jMenuItemAlumno);
 
         jMenuItem1.setText("Materias");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenuAdm.add(jMenuItem1);
 
         jMenuBar1.add(jMenuAdm);
@@ -107,6 +112,13 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jDesktopPane1.add(ventana);
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemAlumnoActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        VistaMaterias vista = new VistaMaterias();
+        jDesktopPane1.add(vista);
+        vista.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
