@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!Grupo4_Universidad/lib/*.jar
 *.war
 *.nar
 *.ear
