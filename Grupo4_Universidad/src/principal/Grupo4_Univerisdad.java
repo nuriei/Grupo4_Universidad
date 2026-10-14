@@ -22,7 +22,7 @@ public class Grupo4_Univerisdad {
        // Alumno estudioso = new Alumno(35999888, "Garrido", "Sandra", LocalDate.of(2000, 3, 15), true);//esta es otra forma de crear un alumno donde le paso la fecha con localDate.of
         //importante q la linea de arriba donde instancio un alumno se comente si ya existe o si no quiero agregar otro alumno y solo quiero listar lo que tengo en la bd
         //new Grupo4_Univerisdad().conectar(estudioso);//con esto llamo el metodo conectar q conecta a la base de datos
-        Materia mat1 = new Materia("Laboratorio", true);
+        Materia mat1 = new Materia("programacion I", true);
        new Grupo4_Univerisdad().probarMateria(mat1);
     } 
 
@@ -86,7 +86,7 @@ public class Grupo4_Univerisdad {
        materiaData = new MateriaData(conexion);
        
         
-        Materia mat2 = new Materia("para borrar", true);
+        Materia mat2 = new Materia("para borrar II", true);
         
         
         materiaData.guardarMateria(mat2);
@@ -112,7 +112,8 @@ public class Grupo4_Univerisdad {
 
         System.out.println("------------------ eliminacion permanente de materia para borrar------------------");
         System.out.println("id de materia a eliminar : "+mat2.getId_materia());
-        materiaData.eliminarMateriaBaseDatos(5);
+        materiaData.eliminarMateriaBaseDatos(7);
+       
         
     
         
