@@ -9,13 +9,23 @@ package vistas;
  * @author jemor
  */
 public class VistaAlumno extends javax.swing.JInternalFrame {
+    
+    
+    
+    private persistencia.AlumnoData alumnoData;
+    private javax.swing.table.DefaultTableModel modeloTabla;
 
     public VistaAlumno() {
         initComponents();
-          btnModificar.addActionListener(evt -> {
-        this.dispose();
-         });
+        panelFormulario.setVisible(false);
+        modeloTabla = (javax.swing.table.DefaultTableModel)tableAlumnos.getModel();
+        
+        persistencia.miConexion conexion = new persistencia.miConexion("jdbc:mysql://localhost:3306/grupo4_universidad","root","");
+
+        alumnoData = new persistencia.AlumnoData(conexion);
+        cargarAlumnos();
     }
+    
 
     
     @SuppressWarnings("unchecked")
@@ -44,7 +54,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnNuevo = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableAlumnos = new javax.swing.JTable();
         btnModificar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
@@ -169,6 +179,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnBuscarDoc.setText("Buscar");
 
         btnNuevo.setText("+ Nuevo");
+        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel8.setText("Buscar alumno");
@@ -207,7 +218,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableAlumnos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -218,9 +229,10 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 "ID", "DNI", "Apellido", "Nombre", "Fecha Nac", "Estado"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tableAlumnos);
 
         btnModificar.setText("Modificar");
+        btnModificar.addActionListener(this::btnModificarActionPerformed);
 
         btnEliminar.setText("Eliminar");
 
@@ -302,13 +314,35 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+      dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAltaActionPerformed
 
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        panelFormulario.setVisible(true);
+        
+    }//GEN-LAST:event_btnNuevoActionPerformed
+    private void cargarAlumnos() {
+    modeloTabla.setRowCount(0);
+
+    for (entidades.Alumno alumno : alumnoData.listarAlumnos()) {
+        modeloTabla.addRow(new Object[]{
+            alumno.getId(),
+            alumno.getDni(),
+            alumno.getApellido(),
+            alumno.getNombre(),
+            alumno.getFecNac(),
+            alumno.isActivo() ? "Activo" : "Inactivo"
+        });
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlta;
@@ -333,9 +367,9 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel panelBusqueda;
     private javax.swing.JPanel panelFormulario;
+    private javax.swing.JTable tableAlumnos;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtBuscarDoc;
     private javax.swing.JTextField txtDocumento;
