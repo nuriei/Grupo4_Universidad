@@ -215,14 +215,17 @@ public class VistaMaterias extends javax.swing.JInternalFrame {
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
         btnCancelar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Nueva Materia");
 
+        buttonGroup2.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jRadioButton1.setText("Activo");
         jRadioButton1.setFocusCycleRoot(true);
 
+        buttonGroup2.add(jRBInactivo);
         jRBInactivo.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jRBInactivo.setText("Inactivo");
 
@@ -270,6 +273,7 @@ public class VistaMaterias extends javax.swing.JInternalFrame {
         jBSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/log-out.png"))); // NOI18N
         jBSalir.setText("Salir");
         jBSalir.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jBSalir.addActionListener(this::jBSalirActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -322,6 +326,17 @@ public class VistaMaterias extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jBSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSalirActionPerformed
+       this.dispose(); // TODO add your handling code here:
+    }//GEN-LAST:event_jBSalirActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+    txtNombre.setText("");
+    buttonGroup2.clearSelection();
+    txtNombre.requestFocus();
+ // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
