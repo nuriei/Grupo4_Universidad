@@ -81,6 +81,7 @@ public class VistaMaterias extends javax.swing.JInternalFrame {
 
         jBLimpiar.setBackground(new java.awt.Color(153, 153, 153));
         jBLimpiar.setText("Limpiar");
+        jBLimpiar.addActionListener(this::jBLimpiarActionPerformed);
 
         javax.swing.GroupLayout PanelBuscarLayout = new javax.swing.GroupLayout(PanelBuscar);
         PanelBuscar.setLayout(PanelBuscarLayout);
@@ -337,6 +338,12 @@ public class VistaMaterias extends javax.swing.JInternalFrame {
     txtNombre.requestFocus();
  // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void jBLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBLimpiarActionPerformed
+    txtBuscarPorNombre.setText("");
+    txtBuscarPorNombre1.setText("");
+    txtBuscarPorNombre.requestFocus();        // TODO add your handling code here:
+    }//GEN-LAST:event_jBLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
