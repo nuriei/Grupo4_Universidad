@@ -177,6 +177,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jLabel7.setText("Documento:");
 
         btnBuscarDoc.setText("Buscar");
+        btnBuscarDoc.addActionListener(this::btnBuscarDocActionPerformed);
 
         btnNuevo.setText("+ Nuevo");
         btnNuevo.addActionListener(this::btnNuevoActionPerformed);
@@ -329,6 +330,55 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         panelFormulario.setVisible(true);
         
     }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnBuscarDocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarDocActionPerformed
+                                                  
+   
+    String documento = txtBuscarDoc.getText().trim();
+
+    if (documento.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Ingresá un documento para buscar.");
+        return;
+    }
+
+    try {
+        int dni = Integer.parseInt(documento);
+        entidades.Alumno alumno = alumnoData.buscarAlumnoPorDni(dni);
+
+        if (alumno != null) {
+            cargarAlumnos();
+
+            for (int i = 0; i < modeloTabla.getRowCount(); i++) {
+                int dniFila = Integer.parseInt(
+                        modeloTabla.getValueAt(i, 1).toString());
+
+                if (dniFila == dni) {
+                    Object[] fila = new Object[modeloTabla.getColumnCount()];
+
+                    for (int j = 0; j < fila.length; j++) {
+                        fila[j] = modeloTabla.getValueAt(i, j);
+                    }
+
+                    modeloTabla.removeRow(i);
+                    modeloTabla.insertRow(0, fila);
+                    tableAlumnos.setRowSelectionInterval(0, 0);
+                    break;
+                }
+            }
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "No se encontró un alumno con ese documento.");
+        }
+
+    } catch (NumberFormatException e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "El documento debe contener solo números.");
+    }
+
+
+
+    }//GEN-LAST:event_btnBuscarDocActionPerformed
     private void cargarAlumnos() {
     modeloTabla.setRowCount(0);
 
