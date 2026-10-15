@@ -121,6 +121,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnGuardar.setText("Guardar");
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(this::btnCancelarActionPerformed);
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setText("Formulario de Alumno");
@@ -427,6 +428,15 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
 
     }//GEN-LAST:event_btnBuscarDocActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+         panelFormulario.setVisible(false);
+             txtDocumento.setText(null);
+             txtApellido.setText(null);
+             txtNombre.setText(null);
+             jDateChooser1.setDate(null);
+         
+    }//GEN-LAST:event_btnCancelarActionPerformed
     private void cargarAlumnos() {
     modeloTabla.setRowCount(0);
 
