@@ -24,6 +24,38 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
 
         alumnoData = new persistencia.AlumnoData(conexion);
         cargarAlumnos();
+        
+        //los botones estan deshabilitados hasta q seleccionemos un objeto en la tabla-Jess
+        btnModificar.setEnabled(false);
+        btnBaja.setEnabled(false);
+        btnAlta.setEnabled(false);
+        btnEliminar.setEnabled(false);
+        
+        
+        //Si un elemento de la tabla esta seleccionado, se habilitan los botones a la derecha d la tabla- Jess
+        tableAlumnos.getSelectionModel().addListSelectionListener(e -> {
+         if (!e.getValueIsAdjusting()) {
+            int fila = tableAlumnos.getSelectedRow();
+            boolean seleccionado = tableAlumnos.getSelectedRow() != -1;
+
+        btnModificar.setEnabled(seleccionado);
+        btnBaja.setEnabled(seleccionado);
+        btnEliminar.setEnabled(seleccionado);
+        
+        //depediendo del estado activo o inactivo del alumno se habilita el btn baja y alta segun corresponda
+        if (seleccionado) {
+            String estado = tableAlumnos.getValueAt(fila, 5).toString();
+
+            btnBaja.setEnabled(estado.equals("Activo"));
+            btnAlta.setEnabled(estado.equals("Inactivo"));
+                        } 
+        else {
+            btnBaja.setEnabled(false);
+            btnAlta.setEnabled(false);
+                 }
+    
+    }
+});
     }
     
 
@@ -323,8 +355,24 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAltaActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificarActionPerformed
+    int fila = tableAlumnos.getSelectedRow();
+
+    if (fila == -1) {
+        return;
+    }
+
+    txtDocumento.setText(tableAlumnos.getValueAt(fila, 1).toString());
+    txtApellido.setText(tableAlumnos.getValueAt(fila, 2).toString());
+    txtNombre.setText(tableAlumnos.getValueAt(fila, 3).toString());
+
+    java.sql.Date fecha = java.sql.Date.valueOf(
+            tableAlumnos.getValueAt(fila, 4).toString());
+    jDateChooser1.setDate(fecha);
+
+    comboBoxEstado.setSelectedItem(
+            tableAlumnos.getValueAt(fila, 5).toString());
+
+    panelFormulario.setVisible(true);    }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         panelFormulario.setVisible(true);
