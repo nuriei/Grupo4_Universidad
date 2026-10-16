@@ -57,11 +57,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 934, Short.MAX_VALUE)
+            .addGap(0, 774, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 928, Short.MAX_VALUE)
+            .addGap(0, 763, Short.MAX_VALUE)
         );
 
         jMenuAdm.setText("Administracion");
@@ -115,7 +115,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     private void jMenuMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMateriasActionPerformed
         // TODO add your handling code here:
-        Vista vista = new Vista();
+        VistaMateria vista = new VistaMateria();
         jDesktopPane1.add(vista);
         vista.setVisible(true);
     }//GEN-LAST:event_jMenuMateriasActionPerformed

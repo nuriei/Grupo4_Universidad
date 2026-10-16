@@ -1,21 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package vistas;
 
-/**
- *
- * @author Nuri
- */
-public class Vista extends javax.swing.JInternalFrame {
+import entidades.Materia;
+import persistencia.MateriaData;
+import persistencia.miConexion;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
-    /**
-     * Creates new form Vista
-     */
-    public Vista() {
+public class VistaMateria extends javax.swing.JInternalFrame {
+    
+    private MateriaData materiaData;
+    private DefaultTableModel modeloTabla;
+    
+    public VistaMateria() {
         initComponents();
+        modeloTabla = (DefaultTableModel) jTable1.getModel();
+        miConexion conexion = new miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", "");
+        materiaData = new MateriaData(conexion);
+        cargarMaterias();
     }
 
     /**
@@ -55,6 +57,8 @@ public class Vista extends javax.swing.JInternalFrame {
         jRadioButton1 = new javax.swing.JRadioButton();
         jRBInactivo = new javax.swing.JRadioButton();
         jBSalir = new javax.swing.JButton();
+
+        setTitle("Sistema de Gestion Universidad de La Punta");
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel5.setText("Gestion de Materias");
@@ -176,7 +180,7 @@ public class Vista extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jbEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jBBaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -204,7 +208,7 @@ public class Vista extends javax.swing.JInternalFrame {
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         panelFormulario.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -273,7 +277,7 @@ public class Vista extends javax.swing.JInternalFrame {
                     .addComponent(jRBInactivo)
                     .addComponent(btnCancelar)
                     .addComponent(jRadioButton1))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         jBSalir.setBackground(new java.awt.Color(153, 153, 153));
@@ -303,7 +307,7 @@ public class Vista extends javax.swing.JInternalFrame {
                     .addComponent(PanelBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(562, Short.MAX_VALUE)
                 .addComponent(jBSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
         );
@@ -387,4 +391,15 @@ public class Vista extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtBuscarPorNombre1;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+private void cargarMaterias() {
+        modeloTabla.setRowCount(0);
+        // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
+        for (Materia m : materiaData.listarMaterias(true)) {
+            modeloTabla.addRow(new Object[]{
+                materiaData, // o m.getId_materia()
+                m.getNombre(),
+                m.isActivo() ? "Activo" : "Inactivo"
+            });
+        }
+    }
 }
