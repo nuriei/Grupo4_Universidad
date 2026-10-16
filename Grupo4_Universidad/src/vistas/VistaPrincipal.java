@@ -115,7 +115,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     private void jMenuMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMateriasActionPerformed
         // TODO add your handling code here:
-        VistaMaterias vista = new VistaMaterias();
+        Vista vista = new Vista();
         jDesktopPane1.add(vista);
         vista.setVisible(true);
     }//GEN-LAST:event_jMenuMateriasActionPerformed

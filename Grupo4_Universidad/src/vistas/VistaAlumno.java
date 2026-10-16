@@ -193,7 +193,15 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
             new String [] {
                 "ID", "DNI", "Apellido", "Nombre", "Fecha Nac", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tableAlumnos);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
