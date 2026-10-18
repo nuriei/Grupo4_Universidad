@@ -2,7 +2,7 @@
 package persistencia;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.DriverManager;  //com.mysql.cj.jdbc.Driver.
 import java.sql.SQLException;
 
 public class miConexion {
@@ -46,7 +46,7 @@ public class miConexion {
         if (conexion == null) {  
             try {
                 // Usamos el driver clásico que coincide con el mensaje de error de tu entorno
-                Class.forName("com.mysql.jdbc.Driver"); 
+                Class.forName("com.mysql.cj.jdbc.Driver"); 
                 
                 conexion = DriverManager.getConnection(url, usuario, password);  
                 System.out.println("¡Conexión establecida con éxito a la base de datos!");
