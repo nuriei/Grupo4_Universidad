@@ -11,6 +11,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     
     private MateriaData materiaData;
     private DefaultTableModel modeloTabla;
+    private boolean editando = false;
     
     public VistaMateria() {
         initComponents();
@@ -295,7 +296,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel12.setText("Nueva Materia");
+        jLabel12.setText("Formulario Materia");
 
         GrupoRadioButton.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -403,9 +404,17 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimpiarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        txtNombre.setText("");
-        GrupoRadioButton.clearSelection();
-        txtNombre.requestFocus();
+
+        if (editando) {
+        JOptionPane.showMessageDialog(this, "no se hicieron modificaciones en materia");
+    } else {
+        JOptionPane.showMessageDialog(this, "se cancelo el guardado de una materia nueva");
+    }
+
+    txtNombre.setText("");
+    GrupoRadioButton.clearSelection();
+    panelFormulario.setVisible(false);
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -462,7 +471,8 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-         panelFormulario.setVisible(true);   // muestra el formulario 
+        editando = false;
+        panelFormulario.setVisible(true);   // muestra el formulario 
         txtNombre.setText("");
         jRadioButton1.setSelected(true);    // Activo por defecto
         txtNombre.requestFocus();
@@ -480,7 +490,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         if (fila == -1) {
             return;
         }
-        
+        editando = true;
         int idMateriaSeleccionada = Integer.parseInt(tablaMateria.getValueAt(fila, 0).toString());//traigo el dato
 
         txtNombre.setText(tablaMateria.getValueAt(fila, 1).toString());//lo seteo
