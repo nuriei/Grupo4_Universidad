@@ -172,6 +172,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/borrar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnBaja.setBackground(new java.awt.Color(153, 153, 153));
         btnBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/baja.png"))); // NOI18N
@@ -417,8 +422,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         String documento = txtBuscarDoc.getText().trim();
 
         if (documento.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Ingresá un documento para buscar.");
+            javax.swing.JOptionPane.showMessageDialog(this,"Ingresá un documento para buscar.");
             return;
         }
 
@@ -430,8 +434,7 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                 cargarAlumnos();
 
                 for (int i = 0; i < modeloTabla.getRowCount(); i++) {
-                    int dniFila = Integer.parseInt(
-                        modeloTabla.getValueAt(i, 1).toString());
+                    int dniFila = Integer.parseInt(modeloTabla.getValueAt(i, 1).toString());
 
                     if (dniFila == dni) {
                         Object[] fila = new Object[modeloTabla.getColumnCount()];
@@ -447,13 +450,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
                     }
                 }
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "No se encontró un alumno con ese documento.");
+                javax.swing.JOptionPane.showMessageDialog(this,"No se encontró un alumno con ese documento.");
             }
 
         } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "El documento debe contener solo números.");
+            javax.swing.JOptionPane.showMessageDialog(this,"El documento debe contener solo números.");
         }
 
     }//GEN-LAST:event_btnBuscarDocActionPerformed
@@ -498,7 +499,26 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void btnAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaActionPerformed
-        // TODO add your handling code here:
+// Cambia el estado de un alumno a activo sin crear un nuevo registro.
+
+    int fila = tableAlumnos.getSelectedRow();
+
+    if (fila == -1) {
+        return;
+    }
+
+    int id = Integer.parseInt(
+        tableAlumnos.getValueAt(fila, 0).toString()
+    );
+
+    int respuesta = JOptionPane.showConfirmDialog(this,"¿Dar de alta a este alumno?","Confirmar alta",JOptionPane.YES_NO_OPTION);
+
+    if (respuesta == JOptionPane.YES_OPTION) {
+        alumnoData.altaAlumno(id);
+        cargarAlumnos();
+
+        JOptionPane.showMessageDialog(this,"Alumno dado de alta correctamente.");
+    }
     }//GEN-LAST:event_btnAltaActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -522,34 +542,28 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }
 
     if (jDateChooser1.getDate() == null) {
-        JOptionPane.showMessageDialog(this,
-                "Seleccioná la fecha de nacimiento.");
+        JOptionPane.showMessageDialog(this,"Seleccioná la fecha de nacimiento.");
         return;
     }
 
     try {
         int dni = Integer.parseInt(documento);
 
-        java.time.LocalDate fecha = new java.sql.Date(
-                jDateChooser1.getDate().getTime()
-        ).toLocalDate();
+        java.time.LocalDate fecha = new java.sql.Date(jDateChooser1.getDate().getTime()).toLocalDate();
 
         boolean activo = comboBoxEstado.getSelectedItem()
                 .toString().equals("Activo");
 
-        entidades.Alumno alumno = new entidades.Alumno(
-                dni, apellido, nombre, fecha, activo
-        );
+        entidades.Alumno alumno = new entidades.Alumno(dni, apellido, nombre, fecha, activo);
 
         if (idAlumnoSeleccionado == -1) {
             alumnoData.guardarAlumno(alumno);
-            JOptionPane.showMessageDialog(this,
-                    "Alumno guardado.");
-        } else {
+            JOptionPane.showMessageDialog(this,"Alumno guardado.");
+        } 
+        else {
             alumno.setId(idAlumnoSeleccionado);
             alumnoData.actualizarAlumno(alumno);
-            JOptionPane.showMessageDialog(this,
-                    "Alumno modificado.");
+            JOptionPane.showMessageDialog(this,"Alumno modificado.");
         }
 
         cargarAlumnos();
@@ -563,41 +577,53 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         comboBoxEstado.setSelectedItem("Activo");
 
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-                "El documento debe contener solo números.");
+        JOptionPane.showMessageDialog(this,"El documento debe contener solo números.");
     }
 
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaActionPerformed
-  
+  // cambia el estado del alumno pero no lo elimina de la base de datos. 
+  //Cuando un alumno no esta inscripto en ninguna materia, el estado por defecto es baja
     int fila = tableAlumnos.getSelectedRow();
 
     if (fila == -1) {
         return;
     }
 
-    int id = Integer.parseInt(
-        tableAlumnos.getValueAt(fila, 0).toString()
-    );
+    int id = Integer.parseInt(tableAlumnos.getValueAt(fila, 0).toString());
 
-    int respuesta = JOptionPane.showConfirmDialog(
-        this,
-        "¿Dar de baja a este alumno?",
-        "Confirmar baja",
-        JOptionPane.YES_NO_OPTION
-    );
+    int respuesta = JOptionPane.showConfirmDialog(this,"¿Dar de baja a este alumno?","Confirmar baja",JOptionPane.YES_NO_OPTION);
 
     if (respuesta == JOptionPane.YES_OPTION) {
         alumnoData.bajaAlumno(id);
         cargarAlumnos();
-        JOptionPane.showMessageDialog(
-            this,
-            "Alumno dado de baja."
-        );
+        JOptionPane.showMessageDialog(this,"Alumno dado de baja.");
     }
 
     }//GEN-LAST:event_btnBajaActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // Elimina definitivamente al alumno seleccionado de la base de datos.
+
+    int fila = tableAlumnos.getSelectedRow();
+
+    if (fila == -1) {
+        return;
+    }
+
+    int id = Integer.parseInt(tableAlumnos.getValueAt(fila, 0).toString());
+
+    int respuesta = JOptionPane.showConfirmDialog(this,"¿Eliminar definitivamente a este alumno? Esta acción no se puede deshacer.","Confirmar eliminación",JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+
+    if (respuesta == JOptionPane.YES_OPTION) {
+        alumnoData.eliminarAlumnoBaseDatos(id);
+        cargarAlumnos();
+
+        JOptionPane.showMessageDialog(this,"Alumno eliminado definitivamente.");
+    }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
