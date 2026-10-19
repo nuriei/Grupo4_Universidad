@@ -11,10 +11,8 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     
     private MateriaData materiaData;
     private DefaultTableModel modeloTabla;
-
-
-
     private boolean editando = false;
+    private int idMateriaActual = -1;
 
     
     public VistaMateria() {
@@ -248,7 +246,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jbEliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jBBaja, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -376,15 +374,15 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(562, Short.MAX_VALUE)
+                .addContainerGap(551, Short.MAX_VALUE)
                 .addComponent(jBSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(PanelBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(panelFormulario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PanelBuscar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
@@ -493,8 +491,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-    
-    String nombre = txtNombre.getText().trim();
+     String nombre = txtNombre.getText().trim();
 
     if (nombre.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Ingrese el nombre de la materia.");
@@ -506,6 +503,18 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         txtNombre.requestFocus();
         return;
     }
+    if (editando) {
+        // --- OPCIÓN MODIFICAR: Pasa el ID guardado y el nuevo nombre directamente ---
+        materiaData.modificarMateria(idMateriaActual, nombre);
+        JOptionPane.showMessageDialog(this, "Materia modificada correctamente.");
+        cargarMaterias();
+    txtNombre.setText("");
+    GrupoRadioButton.clearSelection();
+    panelFormulario.setVisible(false);
+    editando = false;
+    jRadioButton1.setEnabled(true);
+    jRBInactivo.setEnabled(true);
+    } else {
     if (!jRadioButton1.isSelected() && !jRBInactivo.isSelected()) {
         JOptionPane.showMessageDialog(this, "Seleccione el estado: Activo o Inactivo.");
         return;
@@ -521,39 +530,14 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     txtNombre.setText("");
     GrupoRadioButton.clearSelection();
     panelFormulario.setVisible(false);
-
-        // TODO add your handling code here:
+    editando = false;
+    jRadioButton1.setEnabled(true);
+    jRBInactivo.setEnabled(true);
     }//GEN-LAST:event_btnGuardarActionPerformed
-
-
-    private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
-        // TODO add your handling code here:
-        int fila = tablaMateria.getSelectedRow();
-
-        if (fila == -1) {
-            return;
-        }
-        editando = true;
-        int idMateriaSeleccionada = Integer.parseInt(tablaMateria.getValueAt(fila, 0).toString());//traigo el dato
-
-        txtNombre.setText(tablaMateria.getValueAt(fila, 1).toString());//lo seteo
-        String estado = tablaMateria.getValueAt(fila, 2).toString();//creo la variable para dar el accionar en los button
-           if (estado.equals("Activo")) {
-                jRadioButton1.setSelected(true);
-           } else {
-                jRBInactivo.setSelected(true);
-           }
-           jRadioButton1.setEnabled(false);//desactivo los button
-            jRBInactivo.setEnabled(false);
-
-            
-            panelFormulario.setVisible(true);//muestro el panel
-
-        
-    }//GEN-LAST:event_jbModificarActionPerformed
+    }
 
     private void jBAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAltaActionPerformed
-        // TODO add your handling code here:
+
         int fila = tablaMateria.getSelectedRow();
 
         if (fila == -1) {
@@ -583,11 +567,12 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
             JOptionPane.showMessageDialog(this, "materia dada de alta cerrectamente");
         }
+    
     }//GEN-LAST:event_jBAltaActionPerformed
 
     private void jBBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBajaActionPerformed
         // TODO add your handling code here:
-        int fila = tablaMateria.getSelectedRow();
+               int fila = tablaMateria.getSelectedRow();
 
     if (fila == -1) {
         return;
@@ -620,7 +605,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
     private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
         // TODO add your handling code here:
-        int fila = tablaMateria.getSelectedRow();
+               int fila = tablaMateria.getSelectedRow();
 
     if (fila == -1) {
         return;
@@ -651,7 +636,29 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }
     }//GEN-LAST:event_jbEliminarActionPerformed
 
+    private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
+        // TODO add your handling code here:
+        int fila = tablaMateria.getSelectedRow();
 
+        if (fila == -1) {
+            return;
+        }
+        editando = true;
+        idMateriaActual = Integer.parseInt(tablaMateria.getValueAt(fila, 0).toString());
+
+        txtNombre.setText(tablaMateria.getValueAt(fila, 1).toString());//lo seteo
+        String estado = tablaMateria.getValueAt(fila, 2).toString();//creo la variable para dar el accionar en los button
+           if (estado.equals("Activo")) {
+                jRadioButton1.setSelected(true);
+           } else {
+                jRBInactivo.setSelected(true);
+           }
+           jRadioButton1.setEnabled(false);//desactivo los button
+            jRBInactivo.setEnabled(false);
+
+            
+            panelFormulario.setVisible(true);//muestro el panel
+    }//GEN-LAST:event_jbModificarActionPerformed
 
 private void cargarMaterias() {
         

@@ -32,16 +32,16 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="562" max="32767" attributes="0"/>
+              <EmptySpace pref="551" max="32767" attributes="0"/>
               <Component id="jBSalir" min="-2" pref="112" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="PanelBuscar" max="32767" attributes="0"/>
                   <Component id="panelFormulario" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+                  <Component id="PanelBuscar" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
           </Group>
@@ -209,7 +209,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="69" max="32767" attributes="0"/>
+                          <EmptySpace pref="58" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Component id="jbEliminar" alignment="1" max="32767" attributes="0"/>
                               <Component id="jBBaja" alignment="1" max="32767" attributes="0"/>
