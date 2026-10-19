@@ -543,6 +543,8 @@ public class VistaMateria extends javax.swing.JInternalFrame {
            } else {
                 jRBInactivo.setSelected(true);
            }
+           jRadioButton1.setEnabled(false);//desactivo los button
+            jRBInactivo.setEnabled(false);
 
             
             panelFormulario.setVisible(true);//muestro el panel

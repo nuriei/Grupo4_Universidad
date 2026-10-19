@@ -218,5 +218,20 @@ public class MateriaData {
             System.out.println("Error al intentar eliminar la materia " + ex.getMessage()); 
         }
     }
+    public void modificarMateria(int id, String nuevoNombre) {
+    String sql = "UPDATE materia SET nombre = ? WHERE id_materia = ?";
+
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, nuevoNombre);
+        ps.setInt(2, id);
+        
+        ps.executeUpdate();
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("no se puede modificar nombre");
+    }
+}
+    
    
 }
