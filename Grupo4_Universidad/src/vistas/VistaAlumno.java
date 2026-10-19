@@ -1,11 +1,14 @@
 
 package vistas;
 
+import javax.swing.JOptionPane;
+
 public class VistaAlumno extends javax.swing.JInternalFrame {
 
        
     private persistencia.AlumnoData alumnoData;
     private javax.swing.table.DefaultTableModel modeloTabla;
+    private int idAlumnoSeleccionado = -1;
     
     public VistaAlumno() {
         initComponents();
@@ -174,6 +177,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/baja.png"))); // NOI18N
         btnBaja.setText("Baja");
         btnBaja.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBajaActionPerformed(evt);
+            }
+        });
 
         btnAlta.setBackground(new java.awt.Color(153, 153, 153));
         btnAlta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/alta.png"))); // NOI18N
@@ -269,6 +277,11 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         btnGuardar.setBackground(new java.awt.Color(153, 153, 153));
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setBackground(new java.awt.Color(153, 153, 153));
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
@@ -446,27 +459,38 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnBuscarDocActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+        
+        idAlumnoSeleccionado = -1;
+
+        txtDocumento.setText("");
+        txtApellido.setText("");
+        txtNombre.setText("");
+        jDateChooser1.setDate(null);
+        comboBoxEstado.setSelectedItem("Activo");
         panelFormulario.setVisible(true);
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        //Coloca en el formulario los valores de la fila seleccionada y muestra el formulario oculto.
+        //tambien guarda el id del alumno seleccionado
         int fila = tableAlumnos.getSelectedRow();
 
         if (fila == -1) {
             return;
         }
+        
+        idAlumnoSeleccionado = Integer.parseInt(tableAlumnos.getValueAt(fila, 0).toString());
 
         txtDocumento.setText(tableAlumnos.getValueAt(fila, 1).toString());
         txtApellido.setText(tableAlumnos.getValueAt(fila, 2).toString());
         txtNombre.setText(tableAlumnos.getValueAt(fila, 3).toString());
 
-        java.sql.Date fecha = java.sql.Date.valueOf(
-            tableAlumnos.getValueAt(fila, 4).toString());
+        java.sql.Date fecha = java.sql.Date.valueOf(tableAlumnos.getValueAt(fila, 4).toString());
         jDateChooser1.setDate(fecha);
 
-        comboBoxEstado.setSelectedItem(
-            tableAlumnos.getValueAt(fila, 5).toString());
+        comboBoxEstado.setSelectedItem(tableAlumnos.getValueAt(fila, 5).toString());
+         panelFormulario.setVisible(true);
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -485,6 +509,95 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
         jDateChooser1.setDate(null);
 
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    String documento = txtDocumento.getText().trim();
+    String apellido = txtApellido.getText().trim();
+    String nombre = txtNombre.getText().trim();
+
+    if (documento.isEmpty() || apellido.isEmpty() || nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this,
+                "Completá todos los campos.");
+        return;
+    }
+
+    if (jDateChooser1.getDate() == null) {
+        JOptionPane.showMessageDialog(this,
+                "Seleccioná la fecha de nacimiento.");
+        return;
+    }
+
+    try {
+        int dni = Integer.parseInt(documento);
+
+        java.time.LocalDate fecha = new java.sql.Date(
+                jDateChooser1.getDate().getTime()
+        ).toLocalDate();
+
+        boolean activo = comboBoxEstado.getSelectedItem()
+                .toString().equals("Activo");
+
+        entidades.Alumno alumno = new entidades.Alumno(
+                dni, apellido, nombre, fecha, activo
+        );
+
+        if (idAlumnoSeleccionado == -1) {
+            alumnoData.guardarAlumno(alumno);
+            JOptionPane.showMessageDialog(this,
+                    "Alumno guardado.");
+        } else {
+            alumno.setId(idAlumnoSeleccionado);
+            alumnoData.actualizarAlumno(alumno);
+            JOptionPane.showMessageDialog(this,
+                    "Alumno modificado.");
+        }
+
+        cargarAlumnos();
+        panelFormulario.setVisible(false);
+        idAlumnoSeleccionado = -1;
+
+        txtDocumento.setText("");
+        txtApellido.setText("");
+        txtNombre.setText("");
+        jDateChooser1.setDate(null);
+        comboBoxEstado.setSelectedItem("Activo");
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "El documento debe contener solo números.");
+    }
+
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaActionPerformed
+  
+    int fila = tableAlumnos.getSelectedRow();
+
+    if (fila == -1) {
+        return;
+    }
+
+    int id = Integer.parseInt(
+        tableAlumnos.getValueAt(fila, 0).toString()
+    );
+
+    int respuesta = JOptionPane.showConfirmDialog(
+        this,
+        "¿Dar de baja a este alumno?",
+        "Confirmar baja",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (respuesta == JOptionPane.YES_OPTION) {
+        alumnoData.bajaAlumno(id);
+        cargarAlumnos();
+        JOptionPane.showMessageDialog(
+            this,
+            "Alumno dado de baja."
+        );
+    }
+
+    }//GEN-LAST:event_btnBajaActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
