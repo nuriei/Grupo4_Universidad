@@ -462,9 +462,16 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-        // TODO add your handling code here:
-        panelFormulario.setVisible(true);
+         panelFormulario.setVisible(true);   // muestra el formulario 
+        txtNombre.setText("");
+        jRadioButton1.setSelected(true);    // Activo por defecto
+        txtNombre.requestFocus();
+     // TODO add your handling code here:
+    
+
+        
     }//GEN-LAST:event_jbNuevoActionPerformed
+
 
     private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
         // TODO add your handling code here:
@@ -590,6 +597,18 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbEliminarActionPerformed
 
 
+
+private void cargarMaterias() {
+        modeloTabla.setRowCount(0);
+        // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
+        for (Materia m : materiaData.listarMaterias(true)) {
+            modeloTabla.addRow(new Object[]{
+                m.getId_materia(),
+                m.getNombre(),
+                m.isActivo() ? "Activo" : "Inactivo"
+            });
+        }
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GrupoRadioButton;
     private javax.swing.JPanel PanelBuscar;
@@ -620,16 +639,4 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtBuscarPorNombre1;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
-private void cargarMaterias() {
-        modeloTabla.setRowCount(0);
-        // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
-       for (Materia m : materiaData.listarTodasLasMaterias()) {
-        modeloTabla.addRow(new Object[]{
-            m.getId_materia(),
-            m.getNombre(),
-            m.isActivo() ? "Activo" : "Inactivo"
-        });
-       }
-}
-    
 }
