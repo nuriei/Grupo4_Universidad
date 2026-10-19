@@ -370,16 +370,51 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBSalirActionPerformed
 
     private void jbBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbBuscarActionPerformed
-        // TODO add your handling code here:
-        javax.swing.JOptionPane.showMessageDialog(
-    this, 
-    "<html><div style='text-align: center; padding: 10px;'>"
-    + "<b style='color: #2A363B; font-size: 14px;'>¡Operación Exitosa!</b><br><br>"
-    + "<span style='color: #6C7A89;'>Los datos se han guardado correctamente.</span>"
-    + "</div></html>", 
-    "Confirmación", 
-    javax.swing.JOptionPane.INFORMATION_MESSAGE
-);
+                                       
+    String nombreBuscado = txtBuscarPorNombre.getText().trim();//extraigo nombre
+    String idBuscado = txtBuscarPorNombre1.getText().trim();//extraigo id
+    
+    modeloTabla.setRowCount(0); // limpio la tabla
+    
+    //si escriben nombre 
+    if (!nombreBuscado.isEmpty() && idBuscado.isEmpty()) {
+        Materia m = materiaData.buscarMateriaPorNombre(nombreBuscado);
+        if (m != null) {
+            modeloTabla.addRow(new Object[]{
+                m.getId_materia(),
+                m.getNombre(),
+                m.isActivo() ? "Activo" : "Inactivo"
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "no se encontro materia con el nombre exacto ingresado");
+            cargarMaterias(); //carga la tabla nuevamente
+        }
+    } 
+    // si se busca por id
+    else if (!idBuscado.isEmpty() && nombreBuscado.isEmpty()) {//si nombre esta vacio e id no
+        try {
+            int id = Integer.parseInt(idBuscado);
+            Materia m = materiaData.buscarMateriaPorId(id);
+            if (m != null) {
+                modeloTabla.addRow(new Object[]{
+                    m.getId_materia(),
+                    m.getNombre(),
+                    m.isActivo() ? "Activo" : "Inactivo"
+                });
+            } else {
+                JOptionPane.showMessageDialog(this, "no existe materia con ese id");
+                cargarMaterias();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "el id debe ser numerico");
+        }
+    } 
+    // si no hay texto en nungun campo
+    else {
+        JOptionPane.showMessageDialog(this, "ingrese valores a buscar uno por vez por favor");
+        cargarMaterias();
+    }
+
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
