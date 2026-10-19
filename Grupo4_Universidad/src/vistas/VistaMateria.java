@@ -599,9 +599,9 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
 
 private void cargarMaterias() {
+        
         modeloTabla.setRowCount(0);
-        // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
-        for (Materia m : materiaData.listarMaterias(true)) {
+        for (Materia m : materiaData.listarTodasLasMaterias()) {
             modeloTabla.addRow(new Object[]{
                 m.getId_materia(),
                 m.getNombre(),
