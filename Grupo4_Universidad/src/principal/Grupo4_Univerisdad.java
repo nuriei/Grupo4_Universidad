@@ -86,7 +86,7 @@ public class Grupo4_Univerisdad {
        materiaData = new MateriaData(conexion);
        
         
-        Materia mat2 = new Materia("para borrar II", true);
+        Materia mat2 = new Materia("para borrar II", false);
         
         
         materiaData.guardarMateria(mat2);
