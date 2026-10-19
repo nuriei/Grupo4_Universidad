@@ -14,10 +14,16 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     
     public VistaMateria() {
         initComponents();
-        modeloTabla = (DefaultTableModel) jTable1.getModel();
+        panelFormulario.setVisible(false);
+        modeloTabla = (DefaultTableModel) tablaMateria.getModel();
         miConexion conexion = new miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", "");
         materiaData = new MateriaData(conexion);
         cargarMaterias();
+        
+        jbModificar.setEnabled(false);
+        jBBaja.setEnabled(false);
+        jBAlta.setEnabled(false);
+        jbEliminar.setEnabled(false);
     }
 
     /**
@@ -29,7 +35,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup2 = new javax.swing.ButtonGroup();
+        GrupoRadioButton = new javax.swing.ButtonGroup();
         jLabel5 = new javax.swing.JLabel();
         PanelBuscar = new javax.swing.JPanel();
         jbBuscar = new javax.swing.JButton();
@@ -46,7 +52,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jBBaja = new javax.swing.JButton();
         jBAlta = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaMateria = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
         panelFormulario = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -76,6 +82,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jbNuevo.setBackground(new java.awt.Color(153, 153, 153));
         jbNuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconoMas.png"))); // NOI18N
         jbNuevo.setText("Nuevo");
+        jbNuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbNuevoActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel6.setText("Buscar Materia");
@@ -155,18 +166,26 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jBAlta.setText("Alta");
         jBAlta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaMateria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "id", "nombre", "estado"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaMateria);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel9.setText("Listado de Materias");
@@ -234,10 +253,13 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel12.setText("Nueva Materia");
 
+        GrupoRadioButton.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jRadioButton1.setSelected(true);
         jRadioButton1.setText("Activo");
         jRadioButton1.setFocusCycleRoot(true);
 
+        GrupoRadioButton.add(jRBInactivo);
         jRBInactivo.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jRBInactivo.setText("Inactivo");
 
@@ -300,16 +322,16 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(panelFormulario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(PanelBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(31, 31, 31))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(562, Short.MAX_VALUE)
                 .addComponent(jBSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(46, 46, 46))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(PanelBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelFormulario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,12 +339,12 @@ public class VistaMateria extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(PanelBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PanelBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(12, 12, 12)
                 .addComponent(jBSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
@@ -338,7 +360,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         txtNombre.setText("");
-        buttonGroup2.clearSelection();
+        GrupoRadioButton.clearSelection();
         txtNombre.requestFocus();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -360,12 +382,17 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 );
     }//GEN-LAST:event_jbBuscarActionPerformed
 
+    private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
+        // TODO add your handling code here:
+        panelFormulario.setVisible(true);
+    }//GEN-LAST:event_jbNuevoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup GrupoRadioButton;
     private javax.swing.JPanel PanelBuscar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jBAlta;
     private javax.swing.JButton jBBaja;
     private javax.swing.JButton jBLimpiar;
@@ -381,12 +408,12 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jRBInactivo;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JButton jbBuscar;
     private javax.swing.JButton jbEliminar;
     private javax.swing.JButton jbModificar;
     private javax.swing.JButton jbNuevo;
     private javax.swing.JPanel panelFormulario;
+    private javax.swing.JTable tablaMateria;
     private javax.swing.JTextField txtBuscarPorNombre;
     private javax.swing.JTextField txtBuscarPorNombre1;
     private javax.swing.JTextField txtNombre;
@@ -396,7 +423,7 @@ private void cargarMaterias() {
         // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
         for (Materia m : materiaData.listarMaterias(true)) {
             modeloTabla.addRow(new Object[]{
-                materiaData, // o m.getId_materia()
+                m.getId_materia(),
                 m.getNombre(),
                 m.isActivo() ? "Activo" : "Inactivo"
             });

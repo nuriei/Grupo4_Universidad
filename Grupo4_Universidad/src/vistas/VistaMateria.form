@@ -2,7 +2,7 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <NonVisualComponents>
-    <Component class="javax.swing.ButtonGroup" name="buttonGroup2">
+    <Component class="javax.swing.ButtonGroup" name="GrupoRadioButton">
     </Component>
   </NonVisualComponents>
   <Properties>
@@ -32,18 +32,18 @@
               <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="panelFormulario" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
-                  <Component id="PanelBuscar" alignment="1" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
               <EmptySpace pref="562" max="32767" attributes="0"/>
               <Component id="jBSalir" min="-2" pref="112" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Component id="PanelBuscar" max="32767" attributes="0"/>
+                  <Component id="panelFormulario" alignment="0" max="32767" attributes="0"/>
+                  <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -53,12 +53,12 @@
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="PanelBuscar" max="32767" attributes="0"/>
+              <Component id="PanelBuscar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="panelFormulario" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Component id="jBSalir" min="-2" pref="31" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
           </Group>
@@ -153,6 +153,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Nuevo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbNuevoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtBuscarPorNombre">
         </Component>
@@ -304,15 +307,36 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="jTable1">
+            <Component class="javax.swing.JTable" name="tablaMateria">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                    <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                  <Table columnCount="3" rowCount="4">
+                    <Column editable="false" title="id" type="java.lang.Object"/>
+                    <Column editable="false" title="nombre" type="java.lang.Object"/>
+                    <Column editable="false" title="estado" type="java.lang.Object"/>
                   </Table>
+                </Property>
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                  <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                  </TableColumnModel>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
             </Component>
@@ -432,15 +456,22 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRadioButton1">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="GrupoRadioButton"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="1"/>
             </Property>
+            <Property name="selected" type="boolean" value="true"/>
             <Property name="text" type="java.lang.String" value="Activo"/>
             <Property name="focusCycleRoot" type="boolean" value="true"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JRadioButton" name="jRBInactivo">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="GrupoRadioButton"/>
+            </Property>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="13" style="1"/>
             </Property>
