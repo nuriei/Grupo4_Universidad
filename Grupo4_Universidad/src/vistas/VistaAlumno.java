@@ -510,8 +510,14 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     int id = Integer.parseInt(
         tableAlumnos.getValueAt(fila, 0).toString()
     );
+    Object[] opciones = {"Sí", "No"};//como el panel es en ingles lo cambio
+    int respuesta = JOptionPane.showOptionDialog(this,"¿Dar de alta a este alumno?","Confirmar alta",JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones, // aca le digo si o no
+                opciones[0] // boton seleccionado or defecto que va a ser si
 
-    int respuesta = JOptionPane.showConfirmDialog(this,"¿Dar de alta a este alumno?","Confirmar alta",JOptionPane.YES_NO_OPTION);
+    );
 
     if (respuesta == JOptionPane.YES_OPTION) {
         alumnoData.altaAlumno(id);
@@ -592,8 +598,14 @@ public class VistaAlumno extends javax.swing.JInternalFrame {
     }
 
     int id = Integer.parseInt(tableAlumnos.getValueAt(fila, 0).toString());
+    Object[] opciones = {"Sí", "No"};//como el panel es en ingles lo cambio
 
-    int respuesta = JOptionPane.showConfirmDialog(this,"¿Dar de baja a este alumno?","Confirmar baja",JOptionPane.YES_NO_OPTION);
+    int respuesta = JOptionPane.showOptionDialog(this,"¿Dar de baja a este alumno?","Confirmar baja",JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones, // aca le digo si o no
+                opciones[0] // boton seleccionado or defecto que va a ser si
+    );
 
     if (respuesta == JOptionPane.YES_OPTION) {
         alumnoData.bajaAlumno(id);

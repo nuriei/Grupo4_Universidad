@@ -70,6 +70,28 @@ public class MateriaData {
     }
     return listaMaterias;
 }
+    public List<Materia> listarTodasLasMaterias() {
+    List<Materia> listaMaterias = new ArrayList<>();
+    String sql = "SELECT * FROM materia";
+    
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        
+        while (rs.next()) {
+            Materia materia = new Materia();
+            materia.setId_materia(rs.getInt("id_materia"));
+            materia.setNombre(rs.getString("nombre"));
+            materia.setActivo(rs.getBoolean("estado")); 
+            
+            listaMaterias.add(materia);
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al acceder a la tabla materia para listar todas: " + ex.getMessage());
+    }
+    return listaMaterias;
+}
     
     //buscar materia por nombre
     public Materia buscarMateriaPorNombre(String nombreBuscar) {

@@ -11,7 +11,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     
     private MateriaData materiaData;
     private DefaultTableModel modeloTabla;
-
+    private boolean editando = false;
     
     public VistaMateria() {
         initComponents();
@@ -25,6 +25,30 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jBBaja.setEnabled(false);
         jBAlta.setEnabled(false);
         jbEliminar.setEnabled(false);
+        
+        tablaMateria.getSelectionModel().addListSelectionListener(e -> {
+         if (!e.getValueIsAdjusting()) {
+            int fila = tablaMateria.getSelectedRow();
+            boolean seleccionado = tablaMateria.getSelectedRow() != -1;
+
+        jbModificar.setEnabled(seleccionado);
+        jBBaja.setEnabled(seleccionado);
+        jbEliminar.setEnabled(seleccionado);
+        
+        //depediendo del estado activo o inactivo del alumno se habilita el btn baja y alta segun corresponda
+        if (seleccionado) {
+            String estado = tablaMateria.getValueAt(fila, 2).toString();//aca dice q en la tabla en la opcion 3 que seria el indice 2 chequee q estado tiene
+
+            jBBaja.setEnabled(estado.equals("Activo"));
+            jBAlta.setEnabled(estado.equals("Inactivo"));
+                        } 
+        else {
+            jBBaja.setEnabled(false);
+            jBAlta.setEnabled(false);
+                 }
+    
+    }
+});
     }
 
     /**
@@ -152,20 +176,40 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         jbEliminar.setText("Elimnar");
         jbEliminar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jbEliminar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEliminarActionPerformed(evt);
+            }
+        });
 
         jbModificar.setBackground(new java.awt.Color(153, 153, 153));
         jbModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/modificar.png"))); // NOI18N
         jbModificar.setText("Modificar");
+        jbModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbModificarActionPerformed(evt);
+            }
+        });
 
         jBBaja.setBackground(new java.awt.Color(153, 153, 153));
         jBBaja.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/baja.png"))); // NOI18N
         jBBaja.setText("Baja ");
         jBBaja.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jBBaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBBajaActionPerformed(evt);
+            }
+        });
 
         jBAlta.setBackground(new java.awt.Color(153, 153, 153));
         jBAlta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/alta.png"))); // NOI18N
         jBAlta.setText("Alta");
         jBAlta.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jBAlta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAltaActionPerformed(evt);
+            }
+        });
 
         tablaMateria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -257,7 +301,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         });
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel12.setText("Nueva Materia");
+        jLabel12.setText("Formulario Materia");
 
         GrupoRadioButton.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -365,9 +409,17 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBLimpiarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        txtNombre.setText("");
-        GrupoRadioButton.clearSelection();
-        txtNombre.requestFocus();
+
+        if (editando) {
+        JOptionPane.showMessageDialog(this, "no se hicieron modificaciones en materia");
+    } else {
+        JOptionPane.showMessageDialog(this, "se cancelo el guardado de una materia nueva");
+    }
+
+    txtNombre.setText("");
+    GrupoRadioButton.clearSelection();
+    panelFormulario.setVisible(false);
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -424,7 +476,8 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbBuscarActionPerformed
 
     private void jbNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNuevoActionPerformed
-         panelFormulario.setVisible(true);   // muestra el formulario 
+        editando = false;
+        panelFormulario.setVisible(true);   // muestra el formulario 
         txtNombre.setText("");
         jRadioButton1.setSelected(true);    // Activo por defecto
         txtNombre.requestFocus();
@@ -434,42 +487,136 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_jbNuevoActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-    
-    String nombre = txtNombre.getText().trim();
 
-    if (nombre.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Ingrese el nombre de la materia.");
-        txtNombre.requestFocus();
-        return;
-    }
-    if (nombre.length() > 20) {
-        JOptionPane.showMessageDialog(this, "El nombre no puede superar los 20 caracteres.");
-        txtNombre.requestFocus();
-        return;
-    }
-    if (!jRadioButton1.isSelected() && !jRBInactivo.isSelected()) {
-        JOptionPane.showMessageDialog(this, "Seleccione el estado: Activo o Inactivo.");
-        return;
-    }
-
-    boolean activo = jRadioButton1.isSelected();
-
-    Materia nueva = new Materia(nombre, activo);
-    materiaData.guardarMateria(nueva);
-
-    JOptionPane.showMessageDialog(this, "Materia agregada correctamente.");
-    cargarMaterias();
-    txtNombre.setText("");
-    GrupoRadioButton.clearSelection();
-    panelFormulario.setVisible(false);
-
+    private void jbModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbModificarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnGuardarActionPerformed
+        int fila = tablaMateria.getSelectedRow();
+
+        if (fila == -1) {
+            return;
+        }
+        editando = true;
+        int idMateriaSeleccionada = Integer.parseInt(tablaMateria.getValueAt(fila, 0).toString());//traigo el dato
+
+        txtNombre.setText(tablaMateria.getValueAt(fila, 1).toString());//lo seteo
+        String estado = tablaMateria.getValueAt(fila, 2).toString();//creo la variable para dar el accionar en los button
+           if (estado.equals("Activo")) {
+                jRadioButton1.setSelected(true);
+           } else {
+                jRBInactivo.setSelected(true);
+           }
+
+            
+            panelFormulario.setVisible(true);//muestro el panel
+
+        
+    }//GEN-LAST:event_jbModificarActionPerformed
+
+    private void jBAltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAltaActionPerformed
+        // TODO add your handling code here:
+        int fila = tablaMateria.getSelectedRow();
+
+        if (fila == -1) {
+            return;
+        }
+
+        int id = Integer.parseInt(
+                tablaMateria.getValueAt(fila, 0).toString()
+        );
+
+      Object[] opciones = {"Sí", "No"};//como el panel es en ingles lo cambio
+
+        int respuesta = JOptionPane.showOptionDialog(
+                this,
+                "¿desea dar de alta esta materia?",
+                "confirma",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                opciones, // aca le digo si o no
+                opciones[0] // boton seleccionado or defecto que va a ser si
+        );
+
+        if (respuesta == 0) {
+            materiaData.altaMateria(id);
+            cargarMaterias();
+
+            JOptionPane.showMessageDialog(this, "materia dada de alta cerrectamente");
+        }
+    }//GEN-LAST:event_jBAltaActionPerformed
+
+    private void jBBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBBajaActionPerformed
+        // TODO add your handling code here:
+        int fila = tablaMateria.getSelectedRow();
+
+    if (fila == -1) {
+        return;
+    }
+
+    int id = Integer.parseInt(
+            tablaMateria.getValueAt(fila, 0).toString()
+    );
+
+    Object[] opciones = {"Sí", "No"}; 
+
+    int respuesta = JOptionPane.showOptionDialog(//misma opcion de si o no
+            this,
+            "¿Desea dar de baja esta materia?",
+            "Confirmar baja",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+            opciones[0] 
+    );
+
+    if (respuesta == 0) { 
+        materiaData.bajaMateria(id);
+        cargarMaterias(); 
+
+        JOptionPane.showMessageDialog(this, "se dio de baja a la materia");
+    }
+    }//GEN-LAST:event_jBBajaActionPerformed
+
+    private void jbEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEliminarActionPerformed
+        // TODO add your handling code here:
+        int fila = tablaMateria.getSelectedRow();
+
+    if (fila == -1) {
+        return;
+    }
+
+    int id = Integer.parseInt(
+            tablaMateria.getValueAt(fila, 0).toString()
+    );
+
+    Object[] opciones = {"Sí", "No"}; 
+
+    int respuesta = JOptionPane.showOptionDialog(
+            this,
+            "¿seguro desea eliminar la materia permanentemente de la bd?",
+            "Confirmarcion",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE, 
+            null,
+            opciones,
+            opciones[1] // no seleccionado por defecto
+    );
+
+    if (respuesta == 0) { 
+        materiaData.eliminarMateriaBaseDatos(id);
+        cargarMaterias(); // Recarga la tabla
+
+        JOptionPane.showMessageDialog(this, "se borro la materia");
+    }
+    }//GEN-LAST:event_jbEliminarActionPerformed
+
+
+
 private void cargarMaterias() {
+        
         modeloTabla.setRowCount(0);
-        // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
-        for (Materia m : materiaData.listarMaterias(true)) {
+        for (Materia m : materiaData.listarTodasLasMaterias()) {
             modeloTabla.addRow(new Object[]{
                 m.getId_materia(),
                 m.getNombre(),
