@@ -11,6 +11,7 @@ public class VistaMateria extends javax.swing.JInternalFrame {
     
     private MateriaData materiaData;
     private DefaultTableModel modeloTabla;
+
     
     public VistaMateria() {
         initComponents();
@@ -239,6 +240,11 @@ public class VistaMateria extends javax.swing.JInternalFrame {
         btnGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/guardar.png"))); // NOI18N
         btnGuardar.setText("Guardar");
         btnGuardar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setBackground(new java.awt.Color(153, 153, 153));
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/cancel.png"))); // NOI18N
@@ -427,6 +433,39 @@ public class VistaMateria extends javax.swing.JInternalFrame {
 
         
     }//GEN-LAST:event_jbNuevoActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    
+    String nombre = txtNombre.getText().trim();
+
+    if (nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Ingrese el nombre de la materia.");
+        txtNombre.requestFocus();
+        return;
+    }
+    if (nombre.length() > 20) {
+        JOptionPane.showMessageDialog(this, "El nombre no puede superar los 20 caracteres.");
+        txtNombre.requestFocus();
+        return;
+    }
+    if (!jRadioButton1.isSelected() && !jRBInactivo.isSelected()) {
+        JOptionPane.showMessageDialog(this, "Seleccione el estado: Activo o Inactivo.");
+        return;
+    }
+
+    boolean activo = jRadioButton1.isSelected();
+
+    Materia nueva = new Materia(nombre, activo);
+    materiaData.guardarMateria(nueva);
+
+    JOptionPane.showMessageDialog(this, "Materia agregada correctamente.");
+    cargarMaterias();
+    txtNombre.setText("");
+    GrupoRadioButton.clearSelection();
+    panelFormulario.setVisible(false);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardarActionPerformed
 private void cargarMaterias() {
         modeloTabla.setRowCount(0);
         // Listamos todas (puedes pasar true o false según prefieras, o crear un listar general)
@@ -438,6 +477,8 @@ private void cargarMaterias() {
             });
         }
 }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup GrupoRadioButton;
     private javax.swing.JPanel PanelBuscar;
