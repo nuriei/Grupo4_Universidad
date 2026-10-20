@@ -12,13 +12,19 @@ import java.time.LocalDate;
  * @author Nuri
  */
 public class Cursada {
-    private int id_cursada;
+    private int id_cursada=-1;
+    private Alumno alumno;
+    private Materia materia;
     private float nota;
     private float asis;
     private LocalDate cursa;
 
-    public Cursada(int id_cursada, float nota, float asis, LocalDate cursa) {
-        this.id_cursada = id_cursada;
+    public Cursada() {
+    }
+
+    public Cursada(Alumno alumno, Materia materia, float nota, float asis, LocalDate cursa) {
+        this.alumno = alumno;
+        this.materia = materia;
         this.nota = nota;
         this.asis = asis;
         this.cursa = cursa;
@@ -26,6 +32,14 @@ public class Cursada {
 
     public int getId_cursada() {
         return id_cursada;
+    }
+
+    public Alumno getAlumno() {
+        return alumno;
+    }
+
+    public Materia getMateria() {
+        return materia;
     }
 
     public float getNota() {
@@ -44,6 +58,14 @@ public class Cursada {
         this.id_cursada = id_cursada;
     }
 
+    public void setAlumno(Alumno alumno) {
+        this.alumno = alumno;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
     public void setNota(float nota) {
         this.nota = nota;
     }
@@ -58,8 +80,8 @@ public class Cursada {
 
     @Override
     public String toString() {
-        return "Cursada{" + "id_cursada=" + id_cursada + ", nota=" + nota + ", asis=" + asis + ", cursa=" + cursa + '}';
+        return "Cursada{" + "id_cursada=" + id_cursada + ", alumno=" + alumno + ", materia=" + materia + ", nota=" + nota + ", asis=" + asis + ", cursa=" + cursa + '}';
     }
-    
+
     
 }
