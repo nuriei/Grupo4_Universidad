@@ -47,6 +47,10 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenuItemAlumno = new javax.swing.JMenuItem();
         jMenuMaterias = new javax.swing.JMenuItem();
         jMenuConsultas = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SGULP");
@@ -87,7 +91,21 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenuAdm);
 
         jMenuConsultas.setText("Inscripciones");
+
+        jMenuItem1.setText("Inscripcion a Materias");
+        jMenuConsultas.add(jMenuItem1);
+
+        jMenuItem2.setText("listado de alumnos inscriptos");
+        jMenuConsultas.add(jMenuItem2);
+
         jMenuBar1.add(jMenuConsultas);
+
+        jMenu1.setText("Notas");
+
+        jMenuItem3.setText("carga de notas");
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
 
@@ -155,9 +173,13 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenuAdm;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuConsultas;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItemAlumno;
     private javax.swing.JMenuItem jMenuMaterias;
     private javax.swing.JScrollPane jScrollPane1;
