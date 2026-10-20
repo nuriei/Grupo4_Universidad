@@ -153,4 +153,59 @@ public class CursadaData {
             System.out.println("no se pudo actualizar " + ex.getMessage());
         }
     }
+    public List<Alumno> obtenerAlumnosNoInscriptos(int idMateria) {
+        List<Alumno> alumnos = new ArrayList<>();
+        // Busca alumnos activos cuyo ID no esté registrado en la tabla cursada para la materia seleccionada
+        String sql = "SELECT * FROM alumno WHERE estado = 1 AND id_alumno NOT IN (SELECT id_alumno FROM cursada WHERE id_materia = ?)";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idMateria);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Alumno a = new Alumno();
+                a.setId(rs.getInt("id_alumno"));
+                a.setDni(rs.getInt("dni"));
+                a.setApellido(rs.getString("apellido"));
+                a.setNombre(rs.getString("nombre"));
+                a.setFecNac(rs.getDate("fechaNacimiento").toLocalDate());
+                a.setActivo(rs.getBoolean("estado"));
+                
+                alumnos.add(a);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener alumnos no inscriptos: " + ex.getMessage());
+        }
+        return alumnos;
+    }
+    public List<Alumno> obtenerAlumnosPorMateria(int idMateria) {
+        List<Alumno> alumnos = new ArrayList<>();
+        String sql = "SELECT a.id_alumno, a.dni, a.apellido, a.nombre, a.fechaNacimiento, a.estado " +
+                     "FROM alumno a JOIN cursada c ON (a.id_alumno = c.id_alumno) " +
+                     "WHERE c.id_materia = ? AND a.estado = 1";
+        
+        try {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idMateria);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                Alumno a = new Alumno();
+                a.setId(rs.getInt("id_alumno"));
+                a.setDni(rs.getInt("dni"));
+                a.setApellido(rs.getString("apellido"));
+                a.setNombre(rs.getString("nombre"));
+                a.setFecNac(rs.getDate("fechaNacimiento").toLocalDate());
+                a.setActivo(rs.getBoolean("estado"));
+                
+                alumnos.add(a);
+            }
+            ps.close();
+        } catch (SQLException ex) {
+            System.out.println("Error al obtener alumnos por materia: " + ex.getMessage());
+        }
+        return alumnos;
+    }
 }

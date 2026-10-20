@@ -86,7 +86,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuAdm);
 
-        jMenuConsultas.setText("Consultas");
+        jMenuConsultas.setText("Inscripciones");
         jMenuBar1.add(jMenuConsultas);
 
         setJMenuBar(jMenuBar1);
@@ -95,7 +95,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 774, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

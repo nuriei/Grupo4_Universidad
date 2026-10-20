@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import persistencia.MateriaData;
 import persistencia.miConexion;
 
-public class Grupo4_Univerisdad {
+public class Grupo4_Universidad {
    
     private AlumnoData alumnoData;//variable q se usa para la conexion
     private miConexion conexion;//igual
@@ -23,7 +23,7 @@ public class Grupo4_Univerisdad {
         //importante q la linea de arriba donde instancio un alumno se comente si ya existe o si no quiero agregar otro alumno y solo quiero listar lo que tengo en la bd
         //new Grupo4_Univerisdad().conectar(estudioso);//con esto llamo el metodo conectar q conecta a la base de datos
         Materia mat1 = new Materia("programacion I", true);
-       new Grupo4_Univerisdad().probarMateria(mat1);
+       new Grupo4_Universidad().probarMateria(mat1);
     } 
 
    // void conectar(Alumno estudioso) {
