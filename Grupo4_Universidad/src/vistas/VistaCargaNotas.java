@@ -64,28 +64,41 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableNotas = new javax.swing.JTable();
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Carga de Notas");
+        jLabel1.setToolTipText("");
+        jLabel1.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
-        btnGuardar.setText("jButton1");
+        btnGuardar.setText("Guardar");
         btnGuardar.addItemListener(this::btnGuardarItemStateChanged);
         btnGuardar.addActionListener(this::btnGuardarActionPerformed);
 
-        btnSalir.setText("jButton2");
+        btnSalir.setText("Salir");
         btnSalir.addActionListener(this::btnSalirActionPerformed);
 
         jComboBoxAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxAlumno.addItemListener(this::jComboBoxAlumnoItemStateChanged);
 
         jTableNotas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "ID Materia", "Nota"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTableNotas);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -101,12 +114,12 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(213, 213, 213)
+                        .addGap(197, 197, 197)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(15, 15, 15)
                         .addComponent(jComboBoxAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(238, Short.MAX_VALUE))
+                .addContainerGap(187, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(14, Short.MAX_VALUE)
@@ -117,9 +130,9 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGap(14, 14, 14)
+                .addGap(12, 12, 12)
                 .addComponent(jComboBoxAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 267, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnSalir))
@@ -144,9 +157,15 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Seleccioná una materia de la tabla para modificar su nota.");
             return;
         }
-
+        
+        Alumno alumnoSel = (Alumno) jComboBoxAlumno.getSelectedItem();
+        
+        if (alumnoSel == null) {
+            JOptionPane.showMessageDialog(this, "Seleccioná un alumno del listado.");
+            return;
+        }
+        
         try {
-            Alumno alumnoSel = (Alumno) jComboBoxAlumno.getSelectedItem();
             int idMateria = Integer.parseInt(modeloTabla.getValueAt(fila, 0).toString());
             float nuevaNota = Float.parseFloat(modeloTabla.getValueAt(fila, 2).toString());
 
@@ -161,6 +180,36 @@ public class VistaCargaNotas extends javax.swing.JInternalFrame {
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void jComboBoxAlumnoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxAlumnoItemStateChanged
+            if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            modeloTabla.setRowCount(0); // Limpiamos la tabla antes de cargar
+
+            entidades.Alumno seleccionado = (entidades.Alumno) jComboBoxAlumno.getSelectedItem();
+            if (seleccionado != null) {
+                // Obtenemos las materias que cursa el alumno
+                java.util.List<entidades.Materia> materiasCursadas = curData.obtenerMateriasCursadas(seleccionado.getId());
+                java.util.List<entidades.Cursada> listaCursadas = curData.obtenerCursadas();
+
+                for (entidades.Materia m : materiasCursadas) {
+                    float nota = 0.0f;
+                    // Buscamos la nota correspondiente a esta cursada
+                    for (entidades.Cursada c : listaCursadas) {
+                        if (c.getAlumno().getId() == seleccionado.getId() && c.getMateria().getId_materia() == m.getId_materia()) {
+                            nota = c.getNota();
+                            break;
+                        }
+                    }
+                    // Agregamos la fila a la tabla (ID Materia, Materia, Nota)
+                    modeloTabla.addRow(new Object[]{
+                        m.getId_materia(),
+                        m.getNombre(),
+                        nota
+                    });
+                }
+            }
+        }
+    }//GEN-LAST:event_jComboBoxAlumnoItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

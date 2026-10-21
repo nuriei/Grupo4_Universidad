@@ -80,6 +80,6 @@ public class Alumno {
         this.activo = activo;
     }
     public String toString(){
-        return id+"-"+nombre+"-"+apellido+" dni: "+dni+" fecha de nacimiento: "+fecNac+" esta activo? "+activo;
+        return apellido + ", " + nombre + " (DNI: " + dni + ")";
     }
 }
