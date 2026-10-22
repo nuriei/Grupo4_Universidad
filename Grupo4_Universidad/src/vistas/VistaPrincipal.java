@@ -19,6 +19,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     public VistaPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);//para q aparezca la vista en el medio de la pantalla
+
     }
 
     /**
@@ -33,7 +34,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ImageIcon icon = new ImageIcon(getClass().getResource("/imagenes/images.jpg"));
         Image fondoUlp = icon.getImage();
-        jDesktopPane1 = new javax.swing.JDesktopPane() {
+        escritorio = new javax.swing.JDesktopPane() {
             @Override
             protected void paintComponent(java.awt.Graphics g) {
                 super.paintComponent(g);
@@ -55,20 +56,20 @@ public class VistaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SGULP");
 
-        jDesktopPane1.setBackground(new java.awt.Color(255, 255, 255));
+        escritorio.setBackground(new java.awt.Color(255, 255, 255));
 
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 772, Short.MAX_VALUE)
+        javax.swing.GroupLayout escritorioLayout = new javax.swing.GroupLayout(escritorio);
+        escritorio.setLayout(escritorioLayout);
+        escritorioLayout.setHorizontalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 804, Short.MAX_VALUE)
         );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 627, Short.MAX_VALUE)
+        escritorioLayout.setVerticalGroup(
+            escritorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 718, Short.MAX_VALUE)
         );
 
-        jScrollPane1.setViewportView(jDesktopPane1);
+        jScrollPane1.setViewportView(escritorio);
 
         jMenuAdm.setText("Administracion");
 
@@ -118,32 +119,40 @@ public class VistaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 801, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItemAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlumnoActionPerformed
+        escritorio.removeAll();
+        escritorio.repaint();
         VistaAlumno ventana = new VistaAlumno();
-        jDesktopPane1.add(ventana);
+        escritorio.add(ventana);
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemAlumnoActionPerformed
 
     private void jMenuMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuMateriasActionPerformed
         // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
         VistaMateria vista = new VistaMateria();
-        jDesktopPane1.add(vista);
+        escritorio.add(vista);
         vista.setVisible(true);
     }//GEN-LAST:event_jMenuMateriasActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        escritorio.removeAll();
+        escritorio.repaint();
         VistaCargaNotas ventanaNotas = new VistaCargaNotas();
-        jDesktopPane1.add(ventanaNotas);
+        escritorio.add(ventanaNotas);
         ventanaNotas.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -183,7 +192,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JDesktopPane escritorio;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenuAdm;
     private javax.swing.JMenuBar jMenuBar1;
