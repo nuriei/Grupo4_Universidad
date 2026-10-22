@@ -48,8 +48,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenuItemAlumno = new javax.swing.JMenuItem();
         jMenuMaterias = new javax.swing.JMenuItem();
         jMenuConsultas = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menuInscripcionMaterias = new javax.swing.JMenuItem();
+        menuListarAlumnos = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -93,11 +93,21 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
         jMenuConsultas.setText("Inscripciones");
 
-        jMenuItem1.setText("Inscripcion a Materias");
-        jMenuConsultas.add(jMenuItem1);
+        menuInscripcionMaterias.setText("Inscripcion a Materias");
+        menuInscripcionMaterias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuInscripcionMateriasActionPerformed(evt);
+            }
+        });
+        jMenuConsultas.add(menuInscripcionMaterias);
 
-        jMenuItem2.setText("listado de alumnos inscriptos");
-        jMenuConsultas.add(jMenuItem2);
+        menuListarAlumnos.setText("listado de alumnos inscriptos");
+        menuListarAlumnos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuListarAlumnosActionPerformed(evt);
+            }
+        });
+        jMenuConsultas.add(menuListarAlumnos);
 
         jMenuBar1.add(jMenuConsultas);
 
@@ -156,6 +166,24 @@ public class VistaPrincipal extends javax.swing.JFrame {
         ventanaNotas.setVisible(true);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void menuInscripcionMateriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuInscripcionMateriasActionPerformed
+        // TODO add your handling code here
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaInscripcion inscripciones=new VistaInscripcion();
+        escritorio.add(inscripciones);
+        inscripciones.setVisible(true);
+    }//GEN-LAST:event_menuInscripcionMateriasActionPerformed
+
+    private void menuListarAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuListarAlumnosActionPerformed
+        // TODO add your handling code here:
+        escritorio.removeAll();
+        escritorio.repaint();
+        VistaListarInscripciones vistaListado = new VistaListarInscripciones();
+        escritorio.add(vistaListado);
+        vistaListado.setVisible(true);
+    }//GEN-LAST:event_menuListarAlumnosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -197,11 +225,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenuAdm;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuConsultas;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItemAlumno;
     private javax.swing.JMenuItem jMenuMaterias;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menuInscripcionMaterias;
+    private javax.swing.JMenuItem menuListarAlumnos;
     // End of variables declaration//GEN-END:variables
 }

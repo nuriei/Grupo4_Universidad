@@ -32,15 +32,21 @@
             <Property name="text" type="java.lang.String" value="Inscripciones"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="menuInscripcionMaterias">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Inscripcion a Materias"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuInscripcionMateriasActionPerformed"/>
+              </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="menuListarAlumnos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="listado de alumnos inscriptos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuListarAlumnosActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
