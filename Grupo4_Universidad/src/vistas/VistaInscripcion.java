@@ -1,21 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
- */
+
 package vistas;
 
 import entidades.Alumno;
+import entidades.Cursada;
 import entidades.Materia;
 import entidades.Inscripcion;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import persistencia.AlumnoData;
-import persistencia.InscripcionData;
+import persistencia.CursadaData;
+
 
 public class VistaInscripcion extends javax.swing.JInternalFrame {
 
     private AlumnoData aluData;
-    private InscripcionData inscData;
+    private CursadaData cursData;
     private DefaultTableModel modeloTabla;
 
     
@@ -24,7 +23,7 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                                                     // conectamos a la base de datos atarves de persistencia
     persistencia.miConexion con = new persistencia.miConexion("jdbc:mysql://localhost:3306/grupo4_universidad", "root", "");
     this.aluData = new AlumnoData(con);              //
-    this.inscData = new InscripcionData(con);
+    this.cursData = new CursadaData(con);
     
         modeloTabla = new DefaultTableModel() {
         @Override
@@ -34,10 +33,15 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         };
     modeloTabla.addColumn("ID Materia");   // aca cambiamos lascolumnas y editamos la tabla
     modeloTabla.addColumn("Nombre");
-    modeloTabla.addColumn("Año");
     jTableMaterias.setModel(modeloTabla);
+    jRBnoinscriptas.setSelected(true);
+    jBInscribir.setEnabled(true);
+    jBAnular.setEnabled(false);
     
     cargarComboAlumnos();
+  if (JCBxAlumnos.getItemCount() > 0) {
+        cargaDatosNoInscriptas();
+    }
     }
   private void cargarComboAlumnos(){
   
@@ -47,7 +51,45 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }
 
   }
+    private void borrarFilitas() {
+        
+        int filas = modeloTabla.getRowCount();
+        for (int i = filas - 1; i >= 0; i--) {
+            modeloTabla.removeRow(i);
+        }
+    }
 
+    private void cargaDatosNoInscriptas() {
+        borrarFilitas();
+        
+        Alumno seleccionado = (Alumno) JCBxAlumnos.getSelectedItem();
+        if (seleccionado != null) {
+           
+           List<Materia> lista = cursData.obtenerMateriasNoCursadas(seleccionado.getId());
+            for (Materia m : lista) {
+                modeloTabla.addRow(new Object[]{
+                    m.getId_materia(),
+                    m.getNombre(),
+                 
+                });
+            }
+        }
+    }
+
+    private void cargaDatosInscriptas() {
+        borrarFilitas();
+        Alumno seleccionado = (Alumno) JCBxAlumnos.getSelectedItem();
+        if (seleccionado != null) {
+           List<Materia> lista = cursData.obtenerMateriasCursadas(seleccionado.getId());
+            for (Materia m : lista) {
+                modeloTabla.addRow(new Object[]{
+                    m.getId_materia(),
+                    m.getNombre(),
+                   
+                });
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,12 +115,17 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         jBAnular = new javax.swing.JButton();
         jBInscribir = new javax.swing.JButton();
 
+        setTitle("Sistema de gestion Universidad de la Punta");
+
         btnSalir.setBackground(new java.awt.Color(153, 153, 153));
         btnSalir.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/log-out.png"))); // NOI18N
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(this::btnSalirActionPerformed);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        JCBxAlumnos.addActionListener(this::JCBxAlumnosActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Seleccione un Alumno");
@@ -88,9 +135,11 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         buttonGroup1.add(jRBnoinscriptas);
         jRBnoinscriptas.setText("Materias No Inscriptas");
+        jRBnoinscriptas.addActionListener(this::jRBnoinscriptasActionPerformed);
 
         buttonGroup1.add(jRBinscriptas);
         jRBinscriptas.setText("Materias Inscriptas");
+        jRBinscriptas.addActionListener(this::jRBinscriptasActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -107,9 +156,9 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
                         .addComponent(jRBnoinscriptas)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jRBinscriptas, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(24, 24, 24)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,13 +184,13 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         jTableMaterias.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Nombre"
             }
         ));
         jScrollPane1.setViewportView(jTableMaterias);
@@ -150,11 +199,13 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
         jBAnular.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jBAnular.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/baja.png"))); // NOI18N
         jBAnular.setText("Anular Inscripcion");
+        jBAnular.addActionListener(this::jBAnularActionPerformed);
 
         jBInscribir.setBackground(new java.awt.Color(153, 153, 153));
         jBInscribir.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jBInscribir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/iconoMas.png"))); // NOI18N
         jBInscribir.setText("Inscribir a Materia");
+        jBInscribir.addActionListener(this::jBInscribirActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -219,6 +270,96 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void jRBnoinscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBnoinscriptasActionPerformed
+        // TODO add your handling code here:
+        if (jRBnoinscriptas.isSelected()) {
+        cargaDatosNoInscriptas();
+        
+        jBInscribir.setEnabled(true);
+        jBAnular.setEnabled(false);
+    }
+    }//GEN-LAST:event_jRBnoinscriptasActionPerformed
+
+    private void jRBinscriptasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRBinscriptasActionPerformed
+        // TODO add your handling code here:
+        if (jRBinscriptas.isSelected()) {
+        cargaDatosInscriptas();
+        
+        jBInscribir.setEnabled(false);
+        jBAnular.setEnabled(true);
+    }
+    }//GEN-LAST:event_jRBinscriptasActionPerformed
+
+    private void JCBxAlumnosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JCBxAlumnosActionPerformed
+        // TODO add your handling code here:
+        if (jRBnoinscriptas.isSelected()) {
+        cargaDatosNoInscriptas();
+    } else if (jRBinscriptas.isSelected()) {
+        cargaDatosInscriptas();
+    }
+    }//GEN-LAST:event_JCBxAlumnosActionPerformed
+
+    private void jBInscribirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBInscribirActionPerformed
+        // TODO add your handling code here:
+        
+    Alumno alu = (Alumno) JCBxAlumnos.getSelectedItem();//traigo alumno del combo
+    
+    int filaSeleccionada = jTableMaterias.getSelectedRow();//traigo la materia seleccionada
+    
+    
+    if (filaSeleccionada != -1 && alu != null) {
+        
+        int idMateria = (Integer) modeloTabla.getValueAt(filaSeleccionada, 0);
+        
+        
+        Materia mat = new Materia();
+        mat.setId_materia(idMateria);
+        
+        
+        Cursada cursada = new Cursada(alu, mat, 7, 90, java.time.LocalDate.now());
+        
+        
+        cursData.guardarCursada(cursada);
+        javax.swing.JOptionPane.showMessageDialog(this, "se inscribio al alumno perfectamente");
+        
+        cargaDatosNoInscriptas();
+        
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "por favor seleccione una materia para inscrinir");
+    }
+    }//GEN-LAST:event_jBInscribirActionPerformed
+
+    private void jBAnularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAnularActionPerformed
+        // TODO add your handling code here:
+        Alumno alu = (Alumno) JCBxAlumnos.getSelectedItem();
+    
+    
+    int filaSeleccionada = jTableMaterias.getSelectedRow();
+    
+    
+    if (filaSeleccionada != -1 && alu != null) {
+        
+        int idMateria = (Integer) modeloTabla.getValueAt(filaSeleccionada, 0);
+        
+        
+        cursData.borrarCursada(alu.getId(), idMateria);
+        
+      
+        javax.swing.JOptionPane.showMessageDialog(this, "se anulo correctamente la incripcion");
+        
+       
+        cargaDatosInscriptas();
+        
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "seleccione una materia para anular");
+    }
+    }//GEN-LAST:event_jBAnularActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
