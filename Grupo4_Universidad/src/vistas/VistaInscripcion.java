@@ -44,11 +44,13 @@ public class VistaInscripcion extends javax.swing.JInternalFrame {
     }
     }
   private void cargarComboAlumnos(){
-  
-      List<Alumno> lista = aluData.listarAlumnos();  // aca aseguramos cargar alumnos activos(true)
-    for (Alumno alu : lista) { 
-        JCBxAlumnos.addItem(alu);
-    }
+    JCBxAlumnos.removeAllItems();
+        List<Alumno> lista = aluData.listarAlumnos();
+        for (Alumno a : lista) {
+            if (a.isActivo()) {
+                JCBxAlumnos.addItem(a); // Usa el toString() de Alumno para mostrar los datos
+            }
+        }
 
   }
     private void borrarFilitas() {
