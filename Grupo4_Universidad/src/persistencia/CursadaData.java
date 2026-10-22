@@ -180,6 +180,34 @@ public class CursadaData {
         }
         return alumnos;
     }
+    public List<Cursada> obtenerCursadasConNota(int idAlumno) {
+    List<Cursada> cursadas = new ArrayList<>();
+    String sql = "SELECT c.id_cursada, c.nota, m.id_materia, m.nombre, m.estado " +
+                 "FROM cursada c JOIN materia m ON c.id_materia = m.id_materia " +
+                 "WHERE c.id_alumno = ?";
+    try {
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, idAlumno);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            Cursada c = new Cursada();
+            c.setId_cursada(rs.getInt("id_cursada"));
+            c.setNota(rs.getFloat("nota"));
+            
+            Materia m = new Materia();
+            m.setId_materia(rs.getInt("id_materia"));
+            m.setNombre(rs.getString("nombre"));
+            m.setActivo(rs.getBoolean("estado"));
+            
+            c.setMateria(m);
+            cursadas.add(c);
+        }
+        ps.close();
+    } catch (SQLException ex) {
+        System.out.println("Error al obtener cursadas con nota: " + ex.getMessage());
+    }
+    return cursadas;
+}
     public List<Alumno> obtenerAlumnosPorMateria(int idMateria) {
         List<Alumno> alumnos = new ArrayList<>();
         String sql = "SELECT a.id_alumno, a.dni, a.apellido, a.nombre, a.fechaNacimiento, a.estado " +
@@ -208,4 +236,5 @@ public class CursadaData {
         }
         return alumnos;
     }
+    
 }
